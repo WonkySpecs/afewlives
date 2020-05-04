@@ -72,7 +72,9 @@ namespace AFewLives
         {
             return new Dictionary<SpriteState, Animation>
             {
-                { SpriteState.Neutral, new Animation(97, new Vector2(16, 16), 3, 80) }
+                { SpriteState.Neutral, new Animation(0, new Vector2(16, 16), 1, 300) },
+                { SpriteState.WalkingRight, new Animation(16, new Vector2(16, 16), 3, 100) },
+                { SpriteState.WalkingLeft, new Animation(32, new Vector2(16, 16), 3, 100) },
             };
         }
     }

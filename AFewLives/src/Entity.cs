@@ -8,14 +8,22 @@ namespace AFewLives
     {
         public Vector2 Pos { get; set; }
         private readonly Sprite sprite;
+        private readonly Rectangle hitbox;
+        protected SpriteState spriteState = SpriteState.Neutral;
 
-        protected Entity(Sprite sprite, Vector2 pos)
+        public Rectangle Hitbox
+        {
+            get => new Rectangle((int)Pos.X + hitbox.X, (int)Pos.Y + hitbox.Y, hitbox.Width, hitbox.Height);
+        }
+
+        protected Entity(Sprite sprite, Vector2 pos, Rectangle hitbox)
         {
             this.sprite = sprite;
             Pos = pos;
+            this.hitbox = hitbox;
         }
 
-        protected virtual void Update(GameTime delta, SpriteState spriteState)
+        protected virtual void Update(GameTime delta)
         {
             sprite.Update(delta, spriteState);
         }

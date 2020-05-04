@@ -9,7 +9,7 @@ namespace AFewLives
 
         public AssetStore(ContentManager content)
         {
-            PlayerSpriteSheet = content.Load<Texture2D>("charactersheet");
+            PlayerSpriteSheet = content.Load<Texture2D>("snek");
         }
     }
 }

@@ -39,7 +39,6 @@
     <Compile Include="src\AnimatedSprite.cs" />
     <Compile Include="src\AssetStore.cs" />
     <Compile Include="src\Sprite.cs" />
-    <Compile Include="src\MovableEntity.cs" />
     <Compile Include="src\Player.cs" />
     <Compile Include="src\Entity.cs" />
     <Compile Include="src\AFewLives.cs" />

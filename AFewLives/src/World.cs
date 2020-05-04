@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace AFewLives
@@ -12,9 +13,9 @@ namespace AFewLives
             Player = new Player(new AnimatedSprite(assets.PlayerSpriteSheet, animationFactory.PlayerAnimations()));
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, KeyboardState keyboardState)
         {
-            Player.Update(gameTime, SpriteState.Neutral);
+            Player.Update(gameTime, keyboardState);
         }
 
         public void Draw(SpriteBatch spriteBatch)
