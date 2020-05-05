@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace AFewLives
+namespace AFewLives.Entities
 {
     class Player : Entity
     {

@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace AFewLives
+namespace AFewLives.Entities
 {
     class Entity
     {
@@ -22,6 +21,9 @@ namespace AFewLives
             Pos = pos;
             this.hitbox = hitbox;
         }
+
+        protected Entity(Sprite sprite, Vector2 pos)
+            : this(sprite, pos, new Rectangle(0, 0, (int)sprite.Size().X, (int)sprite.Size().Y)) { }
 
         protected virtual void Update(GameTime delta)
         {

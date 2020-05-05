@@ -36,15 +36,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\entities\Activatable.cs" />
     <Compile Include="src\AnimatedSprite.cs" />
     <Compile Include="src\AssetStore.cs" />
     <Compile Include="src\Sprite.cs" />
-    <Compile Include="src\Player.cs" />
-    <Compile Include="src\Entity.cs" />
+    <Compile Include="src\entities\Player.cs" />
+    <Compile Include="src\entities\Entity.cs" />
     <Compile Include="src\AFewLives.cs" />
     <Compile Include="src\StaticSprite.cs" />
+    <Compile Include="src\entities\Lever.cs" />
+    <Compile Include="src\entities\Switch.cs" />
     <Compile Include="src\TilingStaticSprite.cs" />
-    <Compile Include="src\Wall.cs" />
+    <Compile Include="src\entities\Toggleable.cs" />
+    <Compile Include="src\entities\Wall.cs" />
     <Compile Include="src\World.cs" />
   </ItemGroup>
   <ItemGroup>
