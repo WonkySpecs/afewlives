@@ -5,8 +5,14 @@ namespace AFewLives.Entities
 {
     class Wall : Entity
     {
-        public Wall(Texture2D tile, Vector2 size, Vector2 pos) : base(new TilingStaticSprite(tile, size),
-                                                                      pos, 
-                                                                      new Rectangle(0, 0, (int)size.X, (int)size.Y)) { }
+        public bool inSpiritRealm;
+        public Wall(Texture2D tex, Vector2 size, Vector2 pos, bool inSpiritRealm) : base(new StaticSprite(tex),
+                                                                                          pos, 
+                                                                                          new Rectangle(0, 0, (int)size.X, (int)size.Y))
+        {
+            this.inSpiritRealm = inSpiritRealm;
+        }
+
+        public Wall(Texture2D tile, Vector2 size, Vector2 pos) : this(tile, size, pos, false) { }
     }
 }

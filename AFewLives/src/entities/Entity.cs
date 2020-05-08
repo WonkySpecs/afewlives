@@ -1,25 +1,31 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace AFewLives.Entities
 {
     class Entity
     {
-        public Vector2 Pos { get; set; }
+        public Vector2 Pos { get => _pos; }
+        protected Vector2 _pos;
+        public Vector2 Vel { get => _vel; }
+        protected Vector2 _vel;
+
         private readonly Sprite sprite;
-        private readonly Rectangle hitbox;
+        protected readonly Rectangle staticHitbox;
         protected SpriteState spriteState = SpriteState.Neutral;
 
-        public Rectangle Hitbox
+        public RectangleF Hitbox
         {
-            get => new Rectangle((int)Pos.X + hitbox.X, (int)Pos.Y + hitbox.Y, hitbox.Width, hitbox.Height);
+            get => RectangleF.FromPointAndOffset(_pos, staticHitbox);
         }
 
         protected Entity(Sprite sprite, Vector2 pos, Rectangle hitbox)
         {
             this.sprite = sprite;
-            Pos = pos;
-            this.hitbox = hitbox;
+            this.staticHitbox = hitbox;
+            this._vel = new Vector2(0, 0);
+            this._pos = pos;
         }
 
         protected Entity(Sprite sprite, Vector2 pos)
@@ -38,6 +44,16 @@ namespace AFewLives.Entities
         public void Draw(SpriteBatch batch)
         {
             Draw(batch, Color.White);
+        }
+
+        public RectangleF CollisionWith(RectangleF hb2)
+        {
+            RectangleF hb1 = Hitbox;
+            float lowerTop = Math.Max(hb1.Y, hb2.Y);
+            float righterLeft = Math.Max(hb1.X, hb2.X);
+            float lefterRight = Math.Min(hb1.Right, hb2.Right);
+            float higherBottom = Math.Min(hb1.Bottom, hb2.Bottom);
+            return new RectangleF(righterLeft, lowerTop, lefterRight - righterLeft, higherBottom - lowerTop);
         }
     }
 }

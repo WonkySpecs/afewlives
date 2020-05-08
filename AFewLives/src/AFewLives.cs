@@ -24,8 +24,8 @@ namespace AFewLives
         private AFewLives()
         {
             GraphicsDeviceManager gdm = new GraphicsDeviceManager(this);
-            gdm.PreferredBackBufferWidth = 1800;
-            gdm.PreferredBackBufferHeight = 900;
+            gdm.PreferredBackBufferWidth = 800;
+            gdm.PreferredBackBufferHeight = 600;
             gdm.IsFullScreen = false;
             gdm.SynchronizeWithVerticalRetrace = true;
 
@@ -40,7 +40,7 @@ namespace AFewLives
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            assets = new AssetStore(Content);
+            assets = new AssetStore(Content, GraphicsDevice);
             world = new World(assets, animationFactory);
         }
 
