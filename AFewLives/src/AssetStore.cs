@@ -26,5 +26,20 @@ namespace AFewLives
             tex.SetData(data);
             return tex;
         }
+
+        public Texture2D Gradient(Vector2 size)
+        {
+            int w = (int)size.X;
+            int h = (int)size.Y;
+            Texture2D tex = new Texture2D(graphicsDevice, w, h);
+            Color[] data = new Color[w * h];
+            for (int i = 0; i < data.Length; i++)
+            {
+                float val = (float)i / (float)data.Length;
+                data[i] = new Color(val, val, val);
+            }
+            tex.SetData(data);
+            return tex;
+        }
     }
 }

@@ -8,10 +8,12 @@ namespace AFewLives.Entities
     class Player : Entity
     {
         public bool OnGround { get; set; }
+        public bool IsGhost { get; set; }
 
         public Player(Sprite sprite) : base(sprite, new Vector2(200, 200), new Rectangle(0, 0, 16, 16)) 
         {
             OnGround = true;
+            IsGhost = false;
         }
 
         public void Update(GameTime delta, KeyboardState inputs, List<Wall> obstacles)
@@ -25,14 +27,30 @@ namespace AFewLives.Entities
                         : _vel.X < 0 ? SpriteState.WalkingLeft
                                      : SpriteState.Neutral;
 
-            if (OnGround && inputs.IsKeyDown(Keys.Space))
+            if (IsGhost)
             {
-                _vel.Y = -0.6f;
+                if (inputs.IsKeyDown(Keys.W))
+                {
+                    _vel.Y = -0.2f;
+                }
+                else if (inputs.IsKeyDown(Keys.S))
+                {
+                    _vel.Y = 0.2f;
+                }
+                else
+                {
+                    _vel.Y = 0;
+                }
             }
             else
             {
+                if (OnGround && inputs.IsKeyDown(Keys.Space))
+                {
+                    _vel.Y = -0.6f;
+                }
                 _vel.Y += 0.02f;
             }
+            if (inputs.IsKeyDown(Keys.Q)) IsGhost = !IsGhost;
 
             Vector2 newPos = _vel * delta.ElapsedGameTime.Milliseconds + _pos;
             Vector2 correction = PositionCorrection(newPos, obstacles);

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace AFewLives.Entities
 {
-    class Lever : Entity
+    class Lever : Entity, Interactable
     {
         private readonly Collection<Toggleable> targets;
         private bool on;
@@ -14,7 +14,7 @@ namespace AFewLives.Entities
             on = initialState;
         }
 
-        public void Switch()
+        public void InteractWith()
         {
             on = !on;
             foreach (Toggleable t in targets)
