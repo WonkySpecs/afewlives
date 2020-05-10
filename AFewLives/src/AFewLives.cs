@@ -18,16 +18,17 @@ namespace AFewLives
 
         private SpriteBatch spriteBatch;
         private AssetStore assets;
-        private AnimationFactory animationFactory = new AnimationFactory();
         private World world;
 
         private AFewLives()
         {
-            GraphicsDeviceManager gdm = new GraphicsDeviceManager(this);
-            gdm.PreferredBackBufferWidth = 800;
-            gdm.PreferredBackBufferHeight = 600;
-            gdm.IsFullScreen = false;
-            gdm.SynchronizeWithVerticalRetrace = true;
+            GraphicsDeviceManager gdm = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 1080,
+                PreferredBackBufferHeight = 900,
+                IsFullScreen = false,
+                SynchronizeWithVerticalRetrace = true
+            };
 
             Content.RootDirectory = "Content";
         }
@@ -40,8 +41,8 @@ namespace AFewLives
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            assets = new AssetStore(Content, GraphicsDevice);
-            world = new World(assets, animationFactory);
+            assets = new AssetStore(Content, GraphicsDevice, new AnimationFactory());
+            world = new World(assets);
         }
 
         protected override void Update(GameTime gameTime)

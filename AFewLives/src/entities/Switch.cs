@@ -1,20 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace AFewLives.Entities
 {
-    class Button : Entity, Interactable
+    class Button : InteractableEntity
     {
-        private readonly Collection<Activatable> targets;
+        private readonly List<Activatable> targets;
         private bool pressed;
 
-        public Button(Sprite sprite, Vector2 pos, Collection<Activatable> targets) : base(sprite, pos) 
+        public Button(Sprite sprite, Vector2 pos, Rectangle hitbox, List<Activatable> targets) : base(sprite, pos, hitbox) 
         {
             this.targets = targets;
             pressed = false;
         }
 
-        public void InteractWith()
+        public override void InteractWith()
         {
             if (pressed) return;
 

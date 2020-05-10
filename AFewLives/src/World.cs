@@ -8,14 +8,15 @@ namespace AFewLives
 {
     class World
     {
-        public readonly Entities.Player Player;
+        public readonly Player Player;
         private readonly List<Room> rooms = new List<Room>();
         private readonly RoomFactory roomFactory;
         private Room activeRoom;
 
-        public World(AssetStore assets, AnimationFactory animationFactory)
+        public World(AssetStore assets)
         {
-            Player = new Entities.Player(new AnimatedSprite(assets.PlayerSpriteSheet, animationFactory.PlayerAnimations()));
+            Player = new Player(assets.PlayerSprite,
+                                new Vector2(400, 400));
             roomFactory = new RoomFactory(assets);
             rooms.Add(roomFactory.Room1());
             activeRoom = rooms[0];
@@ -23,7 +24,8 @@ namespace AFewLives
 
         public void Update(GameTime gameTime, KeyboardState keyboardState)
         {
-            Player.Update(gameTime, keyboardState, activeRoom.walls);
+            Player.Update(gameTime, keyboardState, activeRoom);
+            activeRoom.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)

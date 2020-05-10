@@ -11,13 +11,16 @@ namespace AFewLives
         private SpriteState prevState;
         private int timerMS;
 
-        public AnimatedSprite(Texture2D spriteSheet, Dictionary<SpriteState, Animation> animations)
+        public AnimatedSprite(Texture2D spriteSheet, Dictionary<SpriteState, Animation> animations, SpriteState initialState)
         {
             this.spriteSheet = spriteSheet;
             this.animations = animations;
-            prevState = SpriteState.Neutral;
+            prevState = initialState;
             timerMS = 0;
         }
+
+        public AnimatedSprite(Texture2D spriteSheet, Dictionary<SpriteState, Animation> animations)
+            : this(spriteSheet, animations, SpriteState.Neutral) { }
 
         public void Update(GameTime delta, SpriteState curState)
         {
@@ -76,6 +79,16 @@ namespace AFewLives
                 { SpriteState.WalkingRight, new Animation(16, new Vector2(16, 16), 3, 100) },
                 { SpriteState.WalkingLeft, new Animation(32, new Vector2(16, 16), 3, 100) },
             };
+        }
+
+        public Dictionary<SpriteState, Animation> LeverAnimations()
+        {
+            return new Dictionary<SpriteState, Animation>
+            {
+                { SpriteState.Activated, new Animation(0, new Vector2(16, 8), 1, 300) },
+                { SpriteState.Deactivated, new Animation(8, new Vector2(16, 8), 1, 300) },
+            };
+
         }
     }
 }

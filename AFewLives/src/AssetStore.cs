@@ -1,19 +1,32 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace AFewLives
 {
     class AssetStore
     {
+        private readonly Dictionary<string, Texture2D> textures;
         private readonly GraphicsDevice graphicsDevice;
+        private readonly AnimationFactory animationFactory;
 
-        public Texture2D PlayerSpriteSheet { get; }
+        public AnimatedSprite PlayerSprite { get => new AnimatedSprite(textures["player"], animationFactory.PlayerAnimations()); }
+        public AnimatedSprite LeverSprite(bool initialState)
+        { 
+            return new AnimatedSprite(textures["lever"],
+                                      animationFactory.LeverAnimations(),
+                                      initialState ? SpriteState.Activated : SpriteState.Deactivated);
+        }
+        public Texture2D LeverTexture { get => textures["lever"]; }
 
-        public AssetStore(ContentManager content, GraphicsDevice graphicsDevice)
+        public AssetStore(ContentManager content, GraphicsDevice graphicsDevice, AnimationFactory animationFactory)
         {
-            PlayerSpriteSheet = content.Load<Texture2D>("snek");
+            textures = new Dictionary<string, Texture2D>();
+            textures.Add("player", content.Load<Texture2D>("snek"));
+            textures.Add("lever", content.Load<Texture2D>("lever"));
             this.graphicsDevice = graphicsDevice;
+            this.animationFactory = animationFactory;
         }
 
         public Texture2D PlainColor(Vector2 size, Color c)

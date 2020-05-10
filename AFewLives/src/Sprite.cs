@@ -13,6 +13,7 @@ namespace AFewLives
 
     public enum SpriteState
     {
-        Neutral, WalkingLeft, WalkingRight
+        Neutral, WalkingLeft, WalkingRight,
+        Activated, Deactivated
     }
 }
