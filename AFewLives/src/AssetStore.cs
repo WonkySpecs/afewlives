@@ -12,11 +12,9 @@ namespace AFewLives
         private readonly AnimationFactory animationFactory;
 
         public AnimatedSprite PlayerSprite { get => new AnimatedSprite(textures["player"], animationFactory.PlayerAnimations()); }
-        public AnimatedSprite LeverSprite(bool initialState)
+        public AnimatedSprite LeverSprite()
         { 
-            return new AnimatedSprite(textures["lever"],
-                                      animationFactory.LeverAnimations(),
-                                      initialState ? SpriteState.Activated : SpriteState.Deactivated);
+            return new AnimatedSprite(textures["lever"], animationFactory.LeverAnimations(), SpriteState.Deactivated);
         }
         public Texture2D LeverTexture { get => textures["lever"]; }
 

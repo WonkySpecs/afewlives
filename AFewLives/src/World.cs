@@ -13,11 +13,10 @@ namespace AFewLives
         private readonly RoomFactory roomFactory;
         private Room activeRoom;
 
-        public World(AssetStore assets)
+        public World(EntityFactory entityFactory)
         {
-            Player = new Player(assets.PlayerSprite,
-                                new Vector2(400, 400));
-            roomFactory = new RoomFactory(assets);
+            Player = entityFactory.Player(new Vector2(400, 400));
+            roomFactory = new RoomFactory(entityFactory);
             rooms.Add(roomFactory.Room1());
             activeRoom = rooms[0];
         }

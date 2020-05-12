@@ -9,7 +9,7 @@ namespace AFewLives
 {
     class Room
     {
-        public readonly List<Wall> walls = new List<Wall>();
+        public readonly List<StaticObstacle> walls = new List<StaticObstacle>();
         public readonly List<InteractableEntity> interactables = new List<InteractableEntity>();
 
         public void Update(GameTime delta)
@@ -22,7 +22,7 @@ namespace AFewLives
 
         public void Draw(SpriteBatch spriteBatch, bool drawInvisible)
         {
-            foreach (Wall wall in walls)
+            foreach (StaticObstacle wall in walls)
             {
                 if(!wall.inSpiritRealm || drawInvisible)
                 {
@@ -39,35 +39,30 @@ namespace AFewLives
 
     class RoomFactory
     {
-        private readonly AssetStore assets;
-        public RoomFactory(AssetStore assets)
+        private readonly EntityFactory entityFactory;
+        public RoomFactory(EntityFactory entityFactory)
         {
-            this.assets = assets;
+            this.entityFactory = entityFactory;
         }
 
         public Room Room1()
         {
             Room room = new Room();
             Vector2 hWallSize = new Vector2(1500, 300);
-            room.walls.Add(new Wall(assets.Gradient(hWallSize), hWallSize, new Vector2(-100, -100)));
-            room.walls.Add(new Wall(assets.Gradient(hWallSize), hWallSize, new Vector2(-100, 800)));
+            room.walls.Add(entityFactory.Wall(new Vector2(-100, -100), hWallSize));
+            room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));
 
             Vector2 vWallSize = new Vector2(300, 1200);
-            room.walls.Add(new Wall(assets.Gradient(vWallSize), vWallSize, new Vector2(-200, -100)));
-            room.walls.Add(new Wall(assets.Gradient(vWallSize), vWallSize, new Vector2(1000, -100)));
+            room.walls.Add(entityFactory.Wall(new Vector2(-200, -100), vWallSize));
+            room.walls.Add(entityFactory.Wall(new Vector2(1000, -100), vWallSize));
 
             Vector2 pitSideSize = new Vector2(250, 100);
-            room.walls.Add(new Wall(assets.Gradient(pitSideSize), pitSideSize, new Vector2(0, 750)));
-            room.walls.Add(new Wall(assets.Gradient(pitSideSize), pitSideSize, new Vector2(700, 750)));
+            room.walls.Add(entityFactory.Wall(new Vector2(0, 750), pitSideSize));
+            room.walls.Add(entityFactory.Wall(new Vector2(700, 750), pitSideSize));
 
-            Vector2 cliffSize = new Vector2(200, 300);
-            room.walls.Add(new Wall(assets.Gradient(cliffSize), cliffSize, new Vector2(900, 500)));
+            room.walls.Add(entityFactory.Wall(new Vector2(900, 500), new Vector2(200, 300)));
 
-            room.interactables.Add(new Lever(assets.LeverSprite(false),
-                                   new Vector2(200, 742),
-                                   new Rectangle(0, 0, 16, 8),
-                                   new List<Toggleable>(),
-                                   false));
+            room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), new List<Toggleable>(), false));
             return room;
         }
     }

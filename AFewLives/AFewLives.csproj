@@ -56,6 +56,7 @@
     <Compile Include="src\AssetStore.cs" />
     <Compile Include="src\entities\Interactable.cs" />
     <Compile Include="src\entities\InteractableEntity.cs" />
+    <Compile Include="src\EntityFactory.cs" />
     <Compile Include="src\RectangleF.cs" />
     <Compile Include="src\Room.cs" />
     <Compile Include="src\Sprite.cs" />
@@ -66,7 +67,7 @@
     <Compile Include="src\entities\Lever.cs" />
     <Compile Include="src\entities\Switch.cs" />
     <Compile Include="src\entities\Toggleable.cs" />
-    <Compile Include="src\entities\Wall.cs" />
+    <Compile Include="src\entities\StaticObstacle.cs" />
     <Compile Include="src\World.cs" />
   </ItemGroup>
   <ItemGroup>

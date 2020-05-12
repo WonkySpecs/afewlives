@@ -42,7 +42,7 @@ namespace AFewLives
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             assets = new AssetStore(Content, GraphicsDevice, new AnimationFactory());
-            world = new World(assets);
+            world = new World(new EntityFactory(assets));
         }
 
         protected override void Update(GameTime gameTime)
