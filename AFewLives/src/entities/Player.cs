@@ -9,11 +9,13 @@ namespace AFewLives.Entities
     {
         public bool OnGround { get; set; }
         public bool IsGhost { get; set; }
+        private bool wasInteracting;
 
         public Player(Sprite sprite, Vector2 pos) : base(sprite, pos, new Rectangle(0, 0, 16, 16)) 
         {
             OnGround = true;
             IsGhost = false;
+            wasInteracting = false;
         }
 
         public void Update(GameTime delta, KeyboardState inputs, Room room)
@@ -50,7 +52,8 @@ namespace AFewLives.Entities
                 }
                 _vel.Y += 0.02f;
 
-                if (inputs.IsKeyDown(Keys.E))
+                bool interacting = inputs.IsKeyDown(Keys.E);
+                if (interacting && !wasInteracting)
                 {
                     foreach (InteractableEntity i in room.interactables)
                     {
@@ -61,6 +64,7 @@ namespace AFewLives.Entities
                         }
                     }
                 }
+                wasInteracting = interacting;
             }
             if (inputs.IsKeyDown(Keys.Q)) IsGhost = !IsGhost;
 
@@ -72,11 +76,11 @@ namespace AFewLives.Entities
             if (correction.Y != 0) { _vel.Y = 0; }
         }
 
-        private Vector2 PositionCorrection(Vector2 projectedPos, List<Wall> obstacles)
+        private Vector2 PositionCorrection(Vector2 projectedPos, List<StaticObstacle> obstacles)
         {
             Vector2 correction = new Vector2();
             RectangleF projectedHb = RectangleF.FromPointAndOffset(projectedPos, staticHitbox);
-            foreach (Wall w in obstacles)
+            foreach (StaticObstacle w in obstacles)
             {
                 Vector2 relVel = _vel - w.Vel;
                 RectangleF collision = w.CollisionWith(projectedHb);
