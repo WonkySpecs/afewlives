@@ -18,9 +18,9 @@ namespace AFewLives
             return new Player(assets.PlayerSprite, pos);
         }
 
-        public StaticObstacle Wall(Vector2 pos, Vector2 size)
+        public Obstacle Wall(Vector2 pos, Vector2 size)
         {
-            return new StaticObstacle(assets.Gradient(size), size, pos);
+            return new Obstacle(assets.Gradient(size), size, pos);
         }
 
         public Lever Lever(Vector2 pos, List<Toggleable> targets, bool inSpiritRealm)

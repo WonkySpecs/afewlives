@@ -14,7 +14,7 @@ namespace AFewLives
             size = new Vector2(tex.Width, tex.Height);
         }
 
-        public void Update(GameTime delta, SpriteState state) {  }
+        public void Update(float delta, SpriteState state) {  }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color tint)
         {

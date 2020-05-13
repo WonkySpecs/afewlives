@@ -7,7 +7,7 @@ namespace AFewLives
     public interface Sprite
     {
         void Draw(SpriteBatch spriteBatch, Vector2 pos, Color tint);
-        void Update(GameTime delta, SpriteState state);
+        void Update(float delta, SpriteState state);
         Vector2 Size();
     }
 

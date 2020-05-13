@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using AFewLives.Entities;
+using System;
 
 namespace AFewLives
 {
@@ -21,10 +22,10 @@ namespace AFewLives
             activeRoom = rooms[0];
         }
 
-        public void Update(GameTime gameTime, KeyboardState keyboardState)
+        public void Update(float delta, KeyboardState keyboardState)
         {
-            Player.Update(gameTime, keyboardState, activeRoom);
-            activeRoom.Update(gameTime);
+            Player.Update(delta, keyboardState, activeRoom);
+            activeRoom.Update(delta);
         }
 
         public void Draw(SpriteBatch spriteBatch)

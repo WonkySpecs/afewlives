@@ -7,6 +7,7 @@ namespace AFewLives.Entities
 {
     class Player : Entity
     {
+        private readonly static float speed = 2.5f;
         public bool OnGround { get; set; }
         public bool IsGhost { get; set; }
         private bool wasInteracting;
@@ -18,12 +19,12 @@ namespace AFewLives.Entities
             wasInteracting = false;
         }
 
-        public void Update(GameTime delta, KeyboardState inputs, Room room)
+        public void Update(float delta, KeyboardState inputs, Room room)
         {
             base.Update(delta);
             _vel.X = 0;
-            _vel.X += inputs.IsKeyDown(Keys.D) ? 0.2f : 0;
-            _vel.X -= inputs.IsKeyDown(Keys.A) ? 0.2f : 0;
+            _vel.X += inputs.IsKeyDown(Keys.D) ? speed : 0;
+            _vel.X -= inputs.IsKeyDown(Keys.A) ? speed : 0;
 
             spriteState = _vel.X > 0 ? SpriteState.WalkingRight
                         : _vel.X < 0 ? SpriteState.WalkingLeft
@@ -33,11 +34,11 @@ namespace AFewLives.Entities
             {
                 if (inputs.IsKeyDown(Keys.W))
                 {
-                    _vel.Y = -0.2f;
+                    _vel.Y = -speed;
                 }
                 else if (inputs.IsKeyDown(Keys.S))
                 {
-                    _vel.Y = 0.2f;
+                    _vel.Y = speed;
                 }
                 else
                 {
@@ -48,9 +49,9 @@ namespace AFewLives.Entities
             {
                 if (OnGround && inputs.IsKeyDown(Keys.Space))
                 {
-                    _vel.Y = -0.6f;
+                    _vel.Y = -8f;
                 }
-                _vel.Y += 0.02f;
+                _vel.Y += 0.45f;
 
                 bool interacting = inputs.IsKeyDown(Keys.E);
                 if (interacting && !wasInteracting)
@@ -68,7 +69,7 @@ namespace AFewLives.Entities
             }
             if (inputs.IsKeyDown(Keys.Q)) IsGhost = !IsGhost;
 
-            Vector2 newPos = _vel * delta.ElapsedGameTime.Milliseconds + _pos;
+            Vector2 newPos = _vel * delta + _pos;
             Vector2 correction = PositionCorrection(newPos, room.walls);
             OnGround = correction.Y  < 0;
             _pos = newPos + correction;
@@ -76,11 +77,11 @@ namespace AFewLives.Entities
             if (correction.Y != 0) { _vel.Y = 0; }
         }
 
-        private Vector2 PositionCorrection(Vector2 projectedPos, List<StaticObstacle> obstacles)
+        private Vector2 PositionCorrection(Vector2 projectedPos, List<Obstacle> obstacles)
         {
             Vector2 correction = new Vector2();
             RectangleF projectedHb = RectangleF.FromPointAndOffset(projectedPos, staticHitbox);
-            foreach (StaticObstacle w in obstacles)
+            foreach (Obstacle w in obstacles)
             {
                 Vector2 relVel = _vel - w.Vel;
                 RectangleF collision = w.CollisionWith(projectedHb);

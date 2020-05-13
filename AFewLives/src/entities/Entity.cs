@@ -31,7 +31,7 @@ namespace AFewLives.Entities
         protected Entity(Sprite sprite, Vector2 pos)
             : this(sprite, pos, new Rectangle(0, 0, (int)sprite.Size().X, (int)sprite.Size().Y)) { }
 
-        public virtual void Update(GameTime delta)
+        public virtual void Update(float delta)
         {
             sprite.Update(delta, spriteState);
         }

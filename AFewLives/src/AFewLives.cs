@@ -8,6 +8,7 @@ namespace AFewLives
 {
     class AFewLives : Game
     {
+        float expectedFrameTime = 1f / 60f;
         static void Main(string[] args)
         {
             using(AFewLives g = new AFewLives())
@@ -48,7 +49,7 @@ namespace AFewLives
         protected override void Update(GameTime gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
-            world.Update(gameTime, keyboardState);
+            world.Update((float)gameTime.ElapsedGameTime.TotalSeconds / expectedFrameTime, keyboardState);
             base.Update(gameTime);
         }
 

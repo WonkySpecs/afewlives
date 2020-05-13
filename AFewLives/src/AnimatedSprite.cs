@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace AFewLives
 {
@@ -9,32 +10,32 @@ namespace AFewLives
         private readonly Texture2D spriteSheet;
         private readonly Dictionary<SpriteState, Animation> animations;
         private SpriteState prevState;
-        private int timerMS;
+        private float timer;
 
         public AnimatedSprite(Texture2D spriteSheet, Dictionary<SpriteState, Animation> animations, SpriteState initialState)
         {
             this.spriteSheet = spriteSheet;
             this.animations = animations;
             prevState = initialState;
-            timerMS = 0;
+            timer = 0;
         }
 
         public AnimatedSprite(Texture2D spriteSheet, Dictionary<SpriteState, Animation> animations)
             : this(spriteSheet, animations, SpriteState.Neutral) { }
 
-        public void Update(GameTime delta, SpriteState curState)
+        public void Update(float delta, SpriteState curState)
         {
-            timerMS = (timerMS + delta.ElapsedGameTime.Milliseconds) % animations[curState].TotalTimeMS;
+            timer = (timer + delta) % animations[curState].TotalTime;
             if (curState != prevState)
             {
-                timerMS = 0;
+                timer = 0;
                 prevState = curState;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color tint)
         {
-            spriteBatch.Draw(spriteSheet, pos, animations[prevState].GetFrame(timerMS), tint);
+            spriteBatch.Draw(spriteSheet, pos, animations[prevState].GetFrame(timer), tint);
         }
 
         public Vector2 Size()
@@ -46,9 +47,9 @@ namespace AFewLives
     class Animation
     {
         private readonly Rectangle[] frames;
-        private readonly int frameDurationMS;
+        private readonly int frameDuration;
 
-        public int TotalTimeMS => frameDurationMS * frames.Length;
+        public int TotalTime => frameDuration * frames.Length;
         public Vector2 Size => new Vector2(frames[0].Width, frames[0].Height);
 
         public Animation(int y, Vector2 frameSize, int numFrames, int frameDurationMS) 
@@ -60,12 +61,12 @@ namespace AFewLives
             {
                 frames[n] = new Rectangle(n * w, y, w, h);
             }
-            this.frameDurationMS = frameDurationMS;
+            this.frameDuration = frameDurationMS;
         }
 
-        public Rectangle GetFrame(int time) 
+        public Rectangle GetFrame(float time) 
         {
-            return frames[time / frameDurationMS];
+            return frames[(int)Math.Round(time) / frameDuration];
         }
     }
 
@@ -75,9 +76,9 @@ namespace AFewLives
         {
             return new Dictionary<SpriteState, Animation>
             {
-                { SpriteState.Neutral, new Animation(0, new Vector2(16, 16), 1, 300) },
-                { SpriteState.WalkingRight, new Animation(16, new Vector2(16, 16), 3, 100) },
-                { SpriteState.WalkingLeft, new Animation(32, new Vector2(16, 16), 3, 100) },
+                { SpriteState.Neutral, new Animation(0, new Vector2(16, 16), 1, 10) },
+                { SpriteState.WalkingRight, new Animation(16, new Vector2(16, 16), 3, 10) },
+                { SpriteState.WalkingLeft, new Animation(32, new Vector2(16, 16), 3, 10) },
             };
         }
 
@@ -85,8 +86,8 @@ namespace AFewLives
         {
             return new Dictionary<SpriteState, Animation>
             {
-                { SpriteState.Activated, new Animation(0, new Vector2(16, 8), 1, 300) },
-                { SpriteState.Deactivated, new Animation(8, new Vector2(16, 8), 1, 300) },
+                { SpriteState.Activated, new Animation(0, new Vector2(16, 8), 1, 100) },
+                { SpriteState.Deactivated, new Animation(8, new Vector2(16, 8), 1, 100) },
             };
 
         }

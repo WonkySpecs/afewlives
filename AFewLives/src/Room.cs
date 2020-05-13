@@ -9,10 +9,10 @@ namespace AFewLives
 {
     class Room
     {
-        public readonly List<StaticObstacle> walls = new List<StaticObstacle>();
+        public readonly List<Obstacle> walls = new List<Obstacle>();
         public readonly List<InteractableEntity> interactables = new List<InteractableEntity>();
 
-        public void Update(GameTime delta)
+        public void Update(float delta)
         {
             foreach(InteractableEntity e in interactables)
             {
@@ -22,7 +22,7 @@ namespace AFewLives
 
         public void Draw(SpriteBatch spriteBatch, bool drawInvisible)
         {
-            foreach (StaticObstacle wall in walls)
+            foreach (Obstacle wall in walls)
             {
                 if(!wall.inSpiritRealm || drawInvisible)
                 {
