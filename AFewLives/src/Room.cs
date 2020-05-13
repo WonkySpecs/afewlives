@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using AFewLives.Entities;
 using Microsoft.Xna.Framework;
+using System.Collections;
 
 namespace AFewLives
 {
@@ -18,6 +19,10 @@ namespace AFewLives
             {
                 e.Update(delta);
             }
+            foreach (Obstacle wall in walls)
+            {
+                wall.Update(delta);
+            }    
         }
 
         public void Draw(SpriteBatch spriteBatch, bool drawInvisible)
@@ -62,7 +67,13 @@ namespace AFewLives
 
             room.walls.Add(entityFactory.Wall(new Vector2(900, 500), new Vector2(200, 300)));
 
-            room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), new List<Toggleable>(), false));
+            List<RetractableWall> someRetractables = new List<RetractableWall>();
+            for (int y = 300; y <= 750; y += 50)
+            {
+                someRetractables.Add(entityFactory.RetractableWall(new Vector2(250, y), new Vector2(450, 20), y / 50));
+            }
+            room.walls.AddRange(someRetractables);
+            room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), new List<Toggleable>(someRetractables), false));
             return room;
         }
     }

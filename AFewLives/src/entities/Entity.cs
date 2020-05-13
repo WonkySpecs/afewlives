@@ -11,8 +11,8 @@ namespace AFewLives.Entities
         public Vector2 Vel { get => _vel; }
         protected Vector2 _vel;
 
-        private readonly Sprite sprite;
-        protected readonly Rectangle staticHitbox;
+        protected readonly Sprite sprite;
+        protected Rectangle staticHitbox;
         protected SpriteState spriteState = SpriteState.Neutral;
 
         public RectangleF Hitbox
@@ -36,7 +36,7 @@ namespace AFewLives.Entities
             sprite.Update(delta, spriteState);
         }
 
-        public void Draw(SpriteBatch batch, Color tint)
+        public virtual void Draw(SpriteBatch batch, Color tint)
         {
             batch.Draw(sprite.SpriteSheet, Pos, sprite.CurrentFrame, tint);
         }

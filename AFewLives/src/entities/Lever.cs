@@ -9,10 +9,10 @@ namespace AFewLives.Entities
         private readonly List<Toggleable> targets;
         private bool on;
 
-        public Lever(Sprite sprite, Vector2 pos, Rectangle hitbox, List<Toggleable> targets) : base(sprite, pos, hitbox) 
+        public Lever(Sprite sprite, Vector2 pos, Rectangle hitbox, List<Toggleable> targets, bool initialState) : base(sprite, pos, hitbox) 
         {
             this.targets = targets;
-            on = false;
+            on = initialState;
             spriteState = SpriteState.Deactivated;
         }
 
