@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\entities\Activatable.cs" />
-    <Compile Include="src\AnimatedSprite.cs" />
+    <Compile Include="src\Sprite.cs" />
     <Compile Include="src\AssetStore.cs" />
     <Compile Include="src\entities\Interactable.cs" />
     <Compile Include="src\entities\InteractableEntity.cs" />
@@ -60,11 +60,9 @@
     <Compile Include="src\EntityFactory.cs" />
     <Compile Include="src\RectangleF.cs" />
     <Compile Include="src\Room.cs" />
-    <Compile Include="src\Sprite.cs" />
     <Compile Include="src\entities\Player.cs" />
     <Compile Include="src\entities\Entity.cs" />
     <Compile Include="src\AFewLives.cs" />
-    <Compile Include="src\StaticSprite.cs" />
     <Compile Include="src\entities\Lever.cs" />
     <Compile Include="src\entities\Switch.cs" />
     <Compile Include="src\entities\Toggleable.cs" />

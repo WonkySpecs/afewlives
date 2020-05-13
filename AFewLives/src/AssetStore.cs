@@ -11,10 +11,10 @@ namespace AFewLives
         private readonly GraphicsDevice graphicsDevice;
         private readonly AnimationFactory animationFactory;
 
-        public AnimatedSprite PlayerSprite { get => new AnimatedSprite(textures["player"], animationFactory.PlayerAnimations()); }
-        public AnimatedSprite LeverSprite()
+        public Sprite PlayerSprite { get => new Sprite(textures["player"], animationFactory.PlayerAnimations()); }
+        public Sprite LeverSprite()
         { 
-            return new AnimatedSprite(textures["lever"], animationFactory.LeverAnimations(), SpriteState.Deactivated);
+            return new Sprite(textures["lever"], animationFactory.LeverAnimations(), SpriteState.Deactivated);
         }
         public Texture2D LeverTexture { get => textures["lever"]; }
 

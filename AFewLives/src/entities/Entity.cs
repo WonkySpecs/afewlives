@@ -38,7 +38,7 @@ namespace AFewLives.Entities
 
         public void Draw(SpriteBatch batch, Color tint)
         {
-            sprite.Draw(batch, Pos, tint);
+            batch.Draw(sprite.SpriteSheet, Pos, sprite.CurrentFrame, tint);
         }
 
         public void Draw(SpriteBatch batch)
