@@ -28,9 +28,9 @@ namespace AFewLives
             return new Lever(assets.LeverSprite(), pos, new Rectangle(0, 0, 16, 8), targets, true);
         }
 
-        public RetractableWall RetractableWall(Vector2 pos, Vector2 startSize, int retractTime)
+        public RetractableWall RetractableWall(Vector2 pos, Vector2 retractedSize, Vector2 fullSize, int retractTime)
         {
-            return new RetractableWall(assets.Gradient(startSize), new Vector2(0, startSize.Y), startSize, pos, false, false, retractTime);
+            return new RetractableWall(assets.Gradient(fullSize), retractedSize, fullSize, pos, false, false, retractTime);
         }
     }
 }

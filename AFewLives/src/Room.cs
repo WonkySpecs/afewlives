@@ -70,8 +70,9 @@ namespace AFewLives
             List<RetractableWall> someRetractables = new List<RetractableWall>();
             for (int y = 300; y <= 750; y += 50)
             {
-                someRetractables.Add(entityFactory.RetractableWall(new Vector2(250, y), new Vector2(450, 20), y / 50));
+                someRetractables.Add(entityFactory.RetractableWall(new Vector2(250, y), new Vector2(0, 20), new Vector2(450, 20), y / 50));
             }
+            someRetractables.Add(entityFactory.RetractableWall(new Vector2(150, 450), new Vector2(20, 50), new Vector2(20, 350), 100));
             room.walls.AddRange(someRetractables);
             room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), new List<Activatable>(someRetractables), false));
             return room;

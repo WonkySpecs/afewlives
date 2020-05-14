@@ -12,6 +12,7 @@ namespace AFewLives.Entities
         private readonly float retractTime;
         private float extension;
         private State state;
+        private Vector2 Size { get => (fullSize - retractedSize) * extension / retractTime + retractedSize; }
 
         public RetractableWall(Texture2D tex, Vector2 retractedSize, Vector2 fullSize, Vector2 pos,
                                bool inSpiritRealm, bool startRetracted, float retractTime) 
@@ -44,15 +45,17 @@ namespace AFewLives.Entities
                     state = State.Static;
                 }
             }
-            staticHitbox.Width = (int)Math.Round(fullSize.X * (extension / retractTime));
-            staticHitbox.Height = (int)Math.Round(fullSize.Y * (extension / retractTime));
+            Vector2 hbSize = Size;
+            staticHitbox.Width = (int)Math.Round(hbSize.X);
+            staticHitbox.Height = (int)Math.Round(hbSize.Y);
         }
 
         public override void Draw(SpriteBatch batch, Color tint)
         {
             Rectangle frame = sprite.CurrentFrame;
-            frame.Width = (int)Math.Round(frame.Width * extension / retractTime);
-            frame.Height = (int)Math.Round(frame.Height * extension / retractTime);
+            Vector2 spriteFrac = Size / fullSize;
+            frame.Width = (int)Math.Round(frame.Width * spriteFrac.X);
+            frame.Height = (int)Math.Round(frame.Height * spriteFrac.Y);
             batch.Draw(sprite.SpriteSheet, Pos, frame, tint);
         }
 
