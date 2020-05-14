@@ -73,7 +73,7 @@ namespace AFewLives
                 someRetractables.Add(entityFactory.RetractableWall(new Vector2(250, y), new Vector2(450, 20), y / 50));
             }
             room.walls.AddRange(someRetractables);
-            room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), new List<Toggleable>(someRetractables), false));
+            room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), new List<Activatable>(someRetractables), false));
             return room;
         }
     }

@@ -5,7 +5,7 @@ using System.Runtime.Remoting.Messaging;
 
 namespace AFewLives.Entities
 {
-    class RetractableWall : Obstacle, Toggleable
+    class RetractableWall : Obstacle, Activatable
     {
         private readonly Vector2 fullSize;
         private readonly Vector2 retractedSize;
@@ -58,12 +58,18 @@ namespace AFewLives.Entities
 
         public void Activate()
         {
-            state = State.Extending;
-        }
-
-        public void Deactivate()
-        {
-            state = State.Retracting;
+            switch (state)
+            {
+                case State.Extending:
+                    state = State.Retracting;
+                    break;
+                case State.Retracting:
+                    state = State.Extending;
+                    break;
+                default:
+                    state = extension == retractTime ? State.Retracting : State.Extending;
+                    break;
+            }
         }
     }
 

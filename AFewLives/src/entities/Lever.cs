@@ -6,29 +6,23 @@ namespace AFewLives.Entities
 {
     class Lever : InteractableEntity
     {
-        private readonly List<Toggleable> targets;
+        private readonly List<Activatable> targets;
         private bool on;
 
-        public Lever(Sprite sprite, Vector2 pos, Rectangle hitbox, List<Toggleable> targets, bool initialState) : base(sprite, pos, hitbox) 
+        public Lever(Sprite sprite, Vector2 pos, Rectangle hitbox, List<Activatable> targets, bool initialState) : base(sprite, pos, hitbox) 
         {
             this.targets = targets;
             on = initialState;
-            spriteState = SpriteState.Deactivated;
+            spriteState = on ? SpriteState.Activated : SpriteState.Deactivated;
         }
 
         public override void InteractWith()
         {
             on = !on;
             spriteState = on ? SpriteState.Activated : SpriteState.Deactivated;
-            foreach (Toggleable t in targets)
+            foreach (Activatable t in targets)
             {
-                if (on)
-                {
-                    t.Activate();
-                } else
-                {
-                    t.Deactivate();
-                }
+                t.Activate();
             }
         }
     }

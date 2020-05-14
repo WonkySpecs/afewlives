@@ -23,7 +23,7 @@ namespace AFewLives
             return new Obstacle(assets.Gradient(size), size, pos);
         }
 
-        public Lever Lever(Vector2 pos, List<Toggleable> targets, bool inSpiritRealm)
+        public Lever Lever(Vector2 pos, List<Activatable> targets, bool inSpiritRealm)
         {
             return new Lever(assets.LeverSprite(), pos, new Rectangle(0, 0, 16, 8), targets, true);
         }
