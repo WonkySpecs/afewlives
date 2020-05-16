@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using AFewLives.Entities;
 using Microsoft.Xna.Framework;
-using System.Collections;
 
 namespace AFewLives
 {

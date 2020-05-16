@@ -10,21 +10,19 @@ namespace AFewLives.Entities
         private readonly static float speed = 2.5f;
         public bool OnGround { get; set; }
         public bool IsGhost { get; set; }
-        private bool wasInteracting;
 
         public Player(Sprite sprite, Vector2 pos) : base(sprite, pos, new Rectangle(0, 0, 16, 16)) 
         {
             OnGround = true;
             IsGhost = false;
-            wasInteracting = false;
         }
 
-        public void Update(float delta, KeyboardState inputs, Room room)
+        public void Update(float delta, Controls input, Room room)
         {
             base.Update(delta);
             _vel.X = 0;
-            _vel.X += inputs.IsKeyDown(Keys.D) ? speed : 0;
-            _vel.X -= inputs.IsKeyDown(Keys.A) ? speed : 0;
+            _vel.X += input.IsDown(Control.MoveRight) ? speed : 0;
+            _vel.X -= input.IsDown(Control.MoveLeft) ? speed : 0;
 
             spriteState = _vel.X > 0 ? SpriteState.WalkingRight
                         : _vel.X < 0 ? SpriteState.WalkingLeft
@@ -32,11 +30,11 @@ namespace AFewLives.Entities
 
             if (IsGhost)
             {
-                if (inputs.IsKeyDown(Keys.W))
+                if (input.IsDown(Control.MoveUp))
                 {
                     _vel.Y = -speed;
                 }
-                else if (inputs.IsKeyDown(Keys.S))
+                else if (input.IsDown(Control.MoveDown))
                 {
                     _vel.Y = speed;
                 }
@@ -47,14 +45,13 @@ namespace AFewLives.Entities
             }
             else
             {
-                if (OnGround && inputs.IsKeyDown(Keys.Space))
+                if (OnGround && input.IsDown(Control.Jump))
                 {
                     _vel.Y = -8f;
                 }
                 _vel.Y += 0.45f;
 
-                bool interacting = inputs.IsKeyDown(Keys.E);
-                if (interacting && !wasInteracting)
+                if (input.WasPressed(Control.Interact))
                 {
                     foreach (InteractableEntity i in room.interactables)
                     {
@@ -65,9 +62,8 @@ namespace AFewLives.Entities
                         }
                     }
                 }
-                wasInteracting = interacting;
             }
-            if (inputs.IsKeyDown(Keys.Q)) IsGhost = !IsGhost;
+            if (input.WasPressed(Control.ToggleLife)) IsGhost = !IsGhost;
 
             Vector2 newPos = _vel * delta + _pos;
             Vector2 correction = PositionCorrection(newPos, room.walls);

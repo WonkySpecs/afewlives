@@ -16,15 +16,15 @@ namespace AFewLives
 
         public World(EntityFactory entityFactory)
         {
-            Player = entityFactory.Player(new Vector2(400, 400));
+            Player = entityFactory.Player(new Vector2(400, 200));
             roomFactory = new RoomFactory(entityFactory);
             rooms.Add(roomFactory.Room1());
             activeRoom = rooms[0];
         }
 
-        public void Update(float delta, KeyboardState keyboardState)
+        public void Update(float delta, Controls inputs)
         {
-            Player.Update(delta, keyboardState, activeRoom);
+            Player.Update(delta, inputs, activeRoom);
             activeRoom.Update(delta);
         }
 

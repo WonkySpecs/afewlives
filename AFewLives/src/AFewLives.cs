@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -20,6 +18,8 @@ namespace AFewLives
         private SpriteBatch spriteBatch;
         private AssetStore assets;
         private World world;
+        private Controls controls = new Controls();
+        private bool paused = false;
 
         private AFewLives()
         {
@@ -48,8 +48,9 @@ namespace AFewLives
 
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
-            world.Update((float)gameTime.ElapsedGameTime.TotalSeconds / expectedFrameTime, keyboardState);
+            controls.Update(Keyboard.GetState());
+            if (controls.WasPressed(Control.Pause)) paused = !paused;
+            if (!paused) world.Update((float)gameTime.ElapsedGameTime.TotalSeconds / expectedFrameTime, controls);
             base.Update(gameTime);
         }
 
