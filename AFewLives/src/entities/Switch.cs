@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AFewLives.Entities
 {
-    class Button : InteractableEntity
+    class Button : InteractableObstacle
     {
         private readonly List<Activatable> targets;
         private bool pressed;

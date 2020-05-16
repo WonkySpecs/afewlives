@@ -54,7 +54,7 @@ namespace AFewLives.Entities
 
                 if (input.WasPressed(Control.Interact))
                 {
-                    foreach (InteractableEntity i in room.interactables)
+                    foreach (InteractableObstacle i in room.interactables)
                     {
                         if (CollidesWith(i))
                         {
@@ -64,7 +64,6 @@ namespace AFewLives.Entities
                     }
                 }
             }
-            if (input.WasPressed(Control.ToggleLife)) IsGhost = !IsGhost;
 
             Vector2 newPos = _vel * delta + _pos;
             Vector2 correction = PositionCorrection(newPos, room.walls);
@@ -95,6 +94,13 @@ namespace AFewLives.Entities
                 }
             }
             return correction;
+        }
+
+        public void Die()
+        {
+            // TODO: sound, animation, and (probably elsewhere) tint change
+            Console.WriteLine("rip");
+            IsGhost = true;
         }
     }
 }

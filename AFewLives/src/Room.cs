@@ -10,33 +10,40 @@ namespace AFewLives
     class Room
     {
         public readonly List<Obstacle> walls = new List<Obstacle>();
-        public readonly List<InteractableEntity> interactables = new List<InteractableEntity>();
+        public readonly List<InteractableObstacle> interactables = new List<InteractableObstacle>();
+        public readonly List<Spikes> spikes = new List<Spikes>();
 
-        public void Update(float delta)
+        public void Update(float delta, Player player)
         {
-            foreach(InteractableEntity e in interactables)
+            foreach(InteractableObstacle e in interactables)
             {
                 e.Update(delta);
             }
             foreach (Obstacle wall in walls)
             {
                 wall.Update(delta);
-            }    
-        }
-
-        public void Draw(SpriteBatch spriteBatch, bool drawInvisible)
-        {
-            foreach (Obstacle wall in walls)
+            }
+            if (!player.IsGhost)
             {
-                if(!wall.inSpiritRealm || drawInvisible)
+                foreach(Spikes spike in spikes)
                 {
-                    wall.Draw(spriteBatch, drawInvisible ? Color.White : Color.DarkBlue);
+                    spike.Update(player);
                 }
             }
+        }
 
-            foreach (InteractableEntity i in interactables)
+        public void Draw(SpriteBatch spriteBatch, bool playerIsDead)
+        {
+            List<Obstacle> all = new List<Obstacle>(walls);
+            all.AddRange(spikes);
+            all.AddRange(interactables);
+            Color tint = playerIsDead ? Color.White : Color.DarkBlue;
+            foreach (Obstacle o in all)
             {
-                i.Draw(spriteBatch, Color.White);
+                if(!o.inSpiritRealm || playerIsDead)
+                {
+                    o.Draw(spriteBatch, tint);
+                }
             }
         }
     }
@@ -74,6 +81,8 @@ namespace AFewLives
             someRetractables.Add(entityFactory.RetractableWall(new Vector2(150, 450), new Vector2(20, 50), new Vector2(20, 350), 100));
             room.walls.AddRange(someRetractables);
             room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), new List<Activatable>(someRetractables), false));
+
+            room.spikes.Add(entityFactory.Spikes(new Vector2(250, 750), new Vector2(200, 50)));
             return room;
         }
     }

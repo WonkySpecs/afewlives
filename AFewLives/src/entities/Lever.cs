@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AFewLives.Entities
 {
-    class Lever : InteractableEntity
+    class Lever : InteractableObstacle
     {
         private readonly List<Activatable> targets;
         private bool on;

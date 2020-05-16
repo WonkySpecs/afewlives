@@ -32,5 +32,10 @@ namespace AFewLives
         {
             return new RetractableWall(assets.Stripy(fullSize), retractedSize, fullSize, pos, false, false, retractTime);
         }
+
+        public Spikes Spikes(Vector2 pos, Vector2 size)
+        {
+            return new Spikes(assets.SpikesTexture, size, pos);
+        }
     }
 }

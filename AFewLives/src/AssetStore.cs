@@ -17,12 +17,14 @@ namespace AFewLives
             return new Sprite(textures["lever"], animationFactory.LeverAnimations(), SpriteState.Deactivated);
         }
         public Texture2D LeverTexture { get => textures["lever"]; }
+        public Texture2D SpikesTexture { get => textures["spikes"]; }
 
         public AssetStore(ContentManager content, GraphicsDevice graphicsDevice, AnimationFactory animationFactory)
         {
             textures = new Dictionary<string, Texture2D>();
             textures.Add("player", content.Load<Texture2D>("snek"));
             textures.Add("lever", content.Load<Texture2D>("lever"));
+            textures.Add("spikes", content.Load<Texture2D>("spikes"));
             this.graphicsDevice = graphicsDevice;
             this.animationFactory = animationFactory;
         }

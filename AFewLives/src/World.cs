@@ -25,13 +25,13 @@ namespace AFewLives
         public void Update(float delta, Controls inputs)
         {
             Player.Update(delta, inputs, activeRoom);
-            activeRoom.Update(delta);
+            activeRoom.Update(delta, Player);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             Player.Draw(spriteBatch);
-            activeRoom.Draw(spriteBatch, false);
+            activeRoom.Draw(spriteBatch, Player.IsGhost);
         }
     }
 }
