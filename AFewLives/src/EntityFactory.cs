@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System;
+using FNAExtensions;
 
 namespace AFewLives
 {
@@ -30,9 +31,11 @@ namespace AFewLives
             return new Lever(assets.LeverSprite(), pos, new Rectangle(0, 0, 16, 8), targets, true);
         }
 
-        public RetractableWall RetractableWall(Vector2 pos, Vector2 retractedSize, Vector2 fullSize, int retractTime)
+        public RetractableWall RetractableWall(Vector2 pos, Vector2 retractedSize,
+                                               Vector2 fullSize, int retractTime)
         {
-            return new RetractableWall(assets.Stripy(fullSize), retractedSize, fullSize, pos, false, false, retractTime);
+            return new RetractableWall(assets.Stripy(fullSize), retractedSize,
+                                       fullSize, pos, false, false, retractTime);
         }
 
         public Spikes Spikes(Vector2 pos, Vector2 size)
@@ -43,6 +46,13 @@ namespace AFewLives
                 Console.WriteLine("Built a spikes with height different to the sprite height");
             }
             return new Spikes(tex, size, pos);
+        }
+
+        public MovingPlatform MovingPlatform(List<Vector2> path, Vector2 size,
+                                             float speed=3f)
+        {
+            return new MovingPlatform(assets.Stripy(size), path[0],
+                                      size.ToRectangle(), false, path, speed, true);
         }
     }
 }

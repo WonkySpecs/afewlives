@@ -13,6 +13,7 @@ namespace AFewLives
         public readonly List<Obstacle> walls = new List<Obstacle>();
         public readonly List<InteractableObstacle> interactables = new List<InteractableObstacle>();
         public readonly List<Spikes> spikes = new List<Spikes>();
+        public readonly List<MovingPlatform> platforms = new List<MovingPlatform>();
 
         public void Update(float delta, Player player)
         {
@@ -23,6 +24,10 @@ namespace AFewLives
             foreach (Obstacle wall in walls)
             {
                 wall.Update(delta);
+            }
+            foreach (MovingPlatform p in platforms)
+            {
+                p.Update(delta, player);
             }
             if (!player.IsGhost)
             {
@@ -38,6 +43,7 @@ namespace AFewLives
             List<Obstacle> all = new List<Obstacle>(walls);
             all.AddRange(spikes);
             all.AddRange(interactables);
+            all.AddRange(platforms);
             Color tint = playerIsDead ? Color.White : Color.DarkBlue;
             foreach (Obstacle o in all)
             {
@@ -81,9 +87,21 @@ namespace AFewLives
             }
             someRetractables.Add(entityFactory.RetractableWall(new Vector2(150, 450), new Vector2(20, 50), new Vector2(20, 350), 100));
             room.walls.AddRange(someRetractables);
-            room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), new List<Activatable>(someRetractables), false));
+            List<Activatable> leverTargets = new List<Activatable>(someRetractables);
 
             room.spikes.Add(entityFactory.Spikes(new Vector2(250, 750), new Vector2(450, 50)));
+
+            List<Vector2> path = new List<Vector2>() {
+                new Vector2(100, 100),
+                new Vector2(500, 200),
+                new Vector2(200, 600),
+            };
+            MovingPlatform platform = entityFactory.MovingPlatform(path, new Vector2(50, 50));
+            room.platforms.Add(platform);
+            leverTargets.Add(platform);
+
+            room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), leverTargets, false));
+
             return room;
         }
     }
