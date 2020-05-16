@@ -1,6 +1,8 @@
 ﻿using AFewLives.Entities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System;
 
 namespace AFewLives
 {
@@ -35,7 +37,12 @@ namespace AFewLives
 
         public Spikes Spikes(Vector2 pos, Vector2 size)
         {
-            return new Spikes(assets.SpikesTexture, size, pos);
+            Texture2D tex = assets.SpikesTexture((int)size.X);
+            if (size.Y != tex.Height)
+            {
+                Console.WriteLine("Built a spikes with height different to the sprite height");
+            }
+            return new Spikes(tex, size, pos);
         }
     }
 }

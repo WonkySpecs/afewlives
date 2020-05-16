@@ -12,12 +12,30 @@ namespace AFewLives
         private readonly AnimationFactory animationFactory;
 
         public Sprite PlayerSprite { get => new Sprite(textures["player"], animationFactory.PlayerAnimations()); }
+
+        public Texture2D LeverTexture { get => textures["lever"]; }
         public Sprite LeverSprite()
         { 
             return new Sprite(textures["lever"], animationFactory.LeverAnimations(), SpriteState.Deactivated);
         }
-        public Texture2D LeverTexture { get => textures["lever"]; }
-        public Texture2D SpikesTexture { get => textures["spikes"]; }
+
+        public Texture2D SpikesTexture(int width)
+        {
+            Texture2D spikes = textures["spikes"];
+            Color[] spikesData = new Color[spikes.Width * spikes.Height];
+            spikes.GetData(spikesData);
+            Texture2D tex = new Texture2D(graphicsDevice, width, spikes.Height);
+            Color[] data = new Color[tex.Width * tex.Height];
+            for (int y = 0; y < tex.Height; y++)
+            {
+                for(int x = 0; x < tex.Width; x++)
+                {
+                    data[y * tex.Width + x] = spikesData[y * spikes.Width + (x % spikes.Width)];
+                }
+            }
+            tex.SetData(data);
+            return tex;
+        }
 
         public AssetStore(ContentManager content, GraphicsDevice graphicsDevice, AnimationFactory animationFactory)
         {

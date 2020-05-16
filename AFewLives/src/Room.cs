@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using AFewLives.Entities;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace AFewLives
 {
@@ -82,7 +83,7 @@ namespace AFewLives
             room.walls.AddRange(someRetractables);
             room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), new List<Activatable>(someRetractables), false));
 
-            room.spikes.Add(entityFactory.Spikes(new Vector2(250, 750), new Vector2(200, 50)));
+            room.spikes.Add(entityFactory.Spikes(new Vector2(250, 750), new Vector2(450, 50)));
             return room;
         }
     }
