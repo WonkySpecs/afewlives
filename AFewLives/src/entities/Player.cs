@@ -20,6 +20,7 @@ namespace AFewLives.Entities
         public void Update(float delta, Controls input, Room room)
         {
             base.Update(delta);
+            if (input.WasPressed(Control.ToggleLife)) IsGhost = !IsGhost;
             _vel.X = 0;
             _vel.X += input.IsDown(Control.MoveRight) ? speed : 0;
             _vel.X -= input.IsDown(Control.MoveLeft) ? speed : 0;

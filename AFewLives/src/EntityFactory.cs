@@ -20,7 +20,7 @@ namespace AFewLives
 
         public Obstacle Wall(Vector2 pos, Vector2 size)
         {
-            return new Obstacle(assets.Gradient(size), size, pos);
+            return new Obstacle(assets.Stripy(size), size, pos);
         }
 
         public Lever Lever(Vector2 pos, List<Activatable> targets, bool inSpiritRealm)
@@ -30,7 +30,7 @@ namespace AFewLives
 
         public RetractableWall RetractableWall(Vector2 pos, Vector2 retractedSize, Vector2 fullSize, int retractTime)
         {
-            return new RetractableWall(assets.Gradient(fullSize), retractedSize, fullSize, pos, false, false, retractTime);
+            return new RetractableWall(assets.Stripy(fullSize), retractedSize, fullSize, pos, false, false, retractTime);
         }
     }
 }

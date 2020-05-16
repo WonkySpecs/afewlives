@@ -52,5 +52,25 @@ namespace AFewLives
             tex.SetData(data);
             return tex;
         }
+
+        public Texture2D Stripy(Vector2 size, int numStripes=6)
+        {
+            int w = (int)size.X;
+            int h = (int)size.Y;
+            float stripeSize = (float)h / (float) numStripes;
+            Texture2D tex = new Texture2D(graphicsDevice, w, h);
+            Color[] data = new Color[w * h];
+            for (int y = 0; y < h; y++)
+            {
+                int stripe = (int)(y / stripeSize);
+                float val = (1 - (float)stripe / (float)numStripes);
+                for(int x = 0; x < w; x++)
+                {
+                    data[y * w + x] = new Color(val, val, val);
+                }
+            }
+            tex.SetData(data);
+            return tex;
+        }
     }
 }
