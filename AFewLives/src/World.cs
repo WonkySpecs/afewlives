@@ -22,10 +22,12 @@ namespace AFewLives
             activeRoom = rooms[0];
         }
 
-        public void Update(float delta, Controls inputs)
+        public void Update(float delta, Controls inputs, Camera2D cam)
         {
             Player.Update(delta, inputs, activeRoom);
             activeRoom.Update(delta, Player);
+            cam.pos = Player.Pos;
+            cam.rot += 0.01f;
         }
 
         public void Draw(SpriteBatch spriteBatch)

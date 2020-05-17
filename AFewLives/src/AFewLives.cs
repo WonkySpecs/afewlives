@@ -20,6 +20,7 @@ namespace AFewLives
         private World world;
         private Controls controls = new Controls();
         private bool paused = false;
+        private Camera2D cam = new Camera2D();
 
         private AFewLives()
         {
@@ -50,14 +51,14 @@ namespace AFewLives
         {
             controls.Update(Keyboard.GetState());
             if (controls.WasPressed(Control.Pause)) paused = !paused;
-            if (!paused) world.Update((float)gameTime.ElapsedGameTime.TotalSeconds / expectedFrameTime, controls);
+            if (!paused) world.Update((float)gameTime.ElapsedGameTime.TotalSeconds / expectedFrameTime, controls, cam);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.HotPink);
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, cam.GetTransform(GraphicsDevice.Viewport));
             world.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
