@@ -63,7 +63,6 @@ namespace AFewLives
             base.Update(gameTime);
         }
 
-        private int milli = 0;
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.SetRenderTarget(renderTarget);
@@ -76,23 +75,7 @@ namespace AFewLives
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(Color.Black);
 
-            float fadeTime = 300f;
-            milli += gameTime.ElapsedGameTime.Milliseconds;
-            if (milli > 2000) milli = 0;
-            float val;
-            if (milli < fadeTime)
-            {
-                val = 1 - milli / fadeTime;
-            }
-            else if(milli <  2 * fadeTime)
-            {
-                val = (milli - fadeTime) / fadeTime;
-            }
-            else
-            {
-                val = 1f;
-            }
-            fadeEffect.Parameters["AlphaFade"].SetValue(val);
+            fadeEffect.Parameters["AlphaFade"].SetValue(world.FadeAmount);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, fadeEffect);
             spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.Black);
             spriteBatch.End();

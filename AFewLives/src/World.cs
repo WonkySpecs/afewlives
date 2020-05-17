@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using AFewLives.Entities;
+using System;
 
 namespace AFewLives
 {
@@ -11,6 +12,18 @@ namespace AFewLives
         private readonly List<Room> rooms = new List<Room>();
         private readonly RoomFactory roomFactory;
         public Room ActiveRoom { get; set; }
+
+        private readonly static float transitionLength = 10;
+        private float transitionElapsed = 0;
+        private TransitionState transitionState = TransitionState.None;
+        private Door transitioningTo;
+        public float FadeAmount {
+            get {
+                if (transitionState == TransitionState.None) return 1f;
+                return transitionState == TransitionState.FadingIn ? transitionElapsed / transitionLength
+                                                                   : 1 - (transitionElapsed / transitionLength);
+            }
+        }
 
         public World(EntityFactory entityFactory)
         {
@@ -38,6 +51,25 @@ namespace AFewLives
             Player.Update(delta, inputs, ActiveRoom);
             ActiveRoom.Update(delta, Player);
             cam.pos = Player.Pos;
+
+            if (transitionState != TransitionState.None)
+            {
+                transitionElapsed += delta;
+                if (transitionElapsed > transitionLength)
+                {
+                    transitionElapsed = 0;
+                    if (transitionState == TransitionState.FadingOut)
+                    {
+                        transitionState = TransitionState.FadingIn;
+                        ActiveRoom = transitioningTo.containingRoom;
+                        Player.Pos = transitioningTo.Pos;
+                    }
+                    else
+                    {
+                        transitionState = TransitionState.None;
+                    }
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -45,5 +77,16 @@ namespace AFewLives
             ActiveRoom.Draw(spriteBatch, Player.IsGhost);
             Player.Draw(spriteBatch);
         }
+
+        public void MoveTo(Door door)
+        {
+            transitionState = TransitionState.FadingOut;
+            transitioningTo = door;
+        }
+    }
+
+    enum TransitionState
+    {
+        None, FadingIn, FadingOut
     }
 }

@@ -7,7 +7,7 @@ namespace AFewLives.Entities
     {
         public Door LeadsTo { get; set; }
         private World world;
-        private Room containingRoom;
+        public Room containingRoom;
         public Door(Texture2D tex, Vector2 pos, Room containingRoom) : base(tex, pos)
         {
             this.containingRoom = containingRoom;
@@ -21,8 +21,7 @@ namespace AFewLives.Entities
 
         public override void InteractWith()
         {
-            world.ActiveRoom = LeadsTo.containingRoom;
-            world.Player.Pos = LeadsTo.Pos;
+            world.MoveTo(LeadsTo);
         }
     }
 }
