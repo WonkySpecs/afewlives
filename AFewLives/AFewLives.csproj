@@ -54,6 +54,7 @@
     <Compile Include="src\engine\Camera2D.cs" />
     <Compile Include="src\engine\Controls.cs" />
     <Compile Include="src\entities\Activatable.cs" />
+    <Compile Include="src\entities\Door.cs" />
     <Compile Include="src\entities\MovingPlatform.cs" />
     <Compile Include="src\entities\Spikes.cs" />
     <Compile Include="src\engine\Sprite.cs" />

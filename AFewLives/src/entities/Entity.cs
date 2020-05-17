@@ -6,7 +6,7 @@ namespace AFewLives.Entities
 {
     class Entity
     {
-        public Vector2 Pos { get => _pos; }
+        public Vector2 Pos { get => _pos; set => _pos = value; }
         protected Vector2 _pos;
         public Vector2 Vel { get => _vel; }
         protected Vector2 _vel;

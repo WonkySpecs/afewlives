@@ -12,13 +12,13 @@ namespace AFewLives.Entities
         {
             this.inSpiritRealm = inSpiritRealm;
         }
-
         public Obstacle(Texture2D tex, Vector2 pos, Rectangle hitbox,
                         bool inSpiritRealm = false) 
-            : this(new Sprite(tex), pos, hitbox) { }
-
+            : this(new Sprite(tex), pos, hitbox, inSpiritRealm) { }
         public Obstacle(Texture2D tex, Vector2 size, Vector2 pos,
                         bool inSpiritRealm=false) 
-            : this(new Sprite(tex), pos, size.ToRectangle()) {}
+            : this(new Sprite(tex), pos, size.ToRectangle(), inSpiritRealm) {}
+        public Obstacle(Texture2D tex, Vector2 pos, bool inSpiritRealm=false) 
+            : this(new Sprite(tex), pos, tex.Bounds, inSpiritRealm) {}
     }
 }

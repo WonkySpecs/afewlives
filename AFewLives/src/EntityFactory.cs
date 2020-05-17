@@ -54,5 +54,10 @@ namespace AFewLives
             return new MovingPlatform(assets.Stripy(size), path[0],
                                       size.ToRectangle(), false, path, speed, true);
         }
+
+        public Door Door(Vector2 pos, Room containingRoom)
+        {
+            return new Door(assets.SolidColor(new Vector2(16, 16), Color.Black), pos, containingRoom);
+        }
     }
 }

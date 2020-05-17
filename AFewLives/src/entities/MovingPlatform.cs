@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,6 +28,7 @@ namespace AFewLives.Entities
         {
             base.Update(delta);
 
+            Vector2 startPos = Pos;
             Vector2 targetPoint = path[pathTarget];
             if (active) {
                 Vector2 d = targetPoint - Pos;
@@ -48,6 +50,12 @@ namespace AFewLives.Entities
             }
 
             // If player is riding, move them by same amount
+            RectangleF phb = player.Hitbox;
+            if (Math.Abs(Hitbox.Top - phb.Bottom) < 0.02
+                && phb.Right >= Hitbox.Left && phb.Left <= Hitbox.Right)
+            {
+                player.MoveWithoutCollision(Pos - startPos);
+            }
         }
 
         public void Activate()

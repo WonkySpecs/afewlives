@@ -14,6 +14,7 @@ namespace AFewLives
         public readonly List<InteractableObstacle> interactables = new List<InteractableObstacle>();
         public readonly List<Spikes> spikes = new List<Spikes>();
         public readonly List<MovingPlatform> platforms = new List<MovingPlatform>();
+        public readonly List<Door> doors = new List<Door>();
 
         public void Update(float delta, Player player)
         {
@@ -44,6 +45,7 @@ namespace AFewLives
             all.AddRange(spikes);
             all.AddRange(interactables);
             all.AddRange(platforms);
+            all.AddRange(doors);
             Color tint = playerIsDead ? Color.White : Color.DarkBlue;
             foreach (Obstacle o in all)
             {
@@ -92,8 +94,8 @@ namespace AFewLives
             room.spikes.Add(entityFactory.Spikes(new Vector2(250, 750), new Vector2(450, 50)));
 
             List<Vector2> path = new List<Vector2>() {
-                new Vector2(100, 100),
-                new Vector2(500, 200),
+                new Vector2(100, 300),
+                new Vector2(500, 300),
                 new Vector2(200, 600),
             };
             MovingPlatform platform = entityFactory.MovingPlatform(path, new Vector2(50, 50));
@@ -102,6 +104,29 @@ namespace AFewLives
 
             room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), leverTargets, false));
 
+            room.doors.Add(entityFactory.Door(new Vector2(400, 284), room));
+
+            return room;
+        }
+
+        public Room Room2()
+        {
+            Room room = new Room();
+            Vector2 hWallSize = new Vector2(1500, 300);
+            room.walls.Add(entityFactory.Wall(new Vector2(-100, -100), hWallSize));
+            room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));
+            room.doors.Add(entityFactory.Door(new Vector2(100, 784), room));
+            room.doors.Add(entityFactory.Door(new Vector2(150, 784), room));
+            return room;
+        }
+
+        public Room Room3()
+        {
+            Room room = new Room();
+            Vector2 hWallSize = new Vector2(1500, 300);
+            room.walls.Add(entityFactory.Wall(new Vector2(-100, -100), hWallSize));
+            room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));
+            room.doors.Add(entityFactory.Door(new Vector2(100, 784), room));
             return room;
         }
     }

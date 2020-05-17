@@ -47,7 +47,7 @@ namespace AFewLives
             this.animationFactory = animationFactory;
         }
 
-        public Texture2D PlainColor(Vector2 size, Color c)
+        public Texture2D SolidColor(Vector2 size, Color c)
         {
             int w = (int)size.X;
             int h = (int)size.Y;

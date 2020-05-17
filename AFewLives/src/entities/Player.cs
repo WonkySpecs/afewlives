@@ -53,7 +53,9 @@ namespace AFewLives.Entities
 
                 if (input.WasPressed(Control.Interact))
                 {
-                    foreach (InteractableObstacle i in room.interactables)
+                    List<InteractableObstacle> interactables = new List<InteractableObstacle>(room.interactables);
+                    interactables.AddRange(room.doors);
+                    foreach (InteractableObstacle i in interactables)
                     {
                         if (CollidesWith(i))
                         {
@@ -100,6 +102,11 @@ namespace AFewLives.Entities
             // TODO: sound, animation, and (probably elsewhere) tint change
             Console.WriteLine("rip");
             IsGhost = true;
+        }
+
+        public void MoveWithoutCollision(Vector2 d)
+        {
+            _pos += d;
         }
     }
 }
