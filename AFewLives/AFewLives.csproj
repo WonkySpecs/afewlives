@@ -51,16 +51,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\Controls.cs" />
+    <Compile Include="src\engine\Controls.cs" />
     <Compile Include="src\entities\Activatable.cs" />
+    <Compile Include="src\entities\MovingPlatform.cs" />
     <Compile Include="src\entities\Spikes.cs" />
-    <Compile Include="src\Sprite.cs" />
+    <Compile Include="src\engine\Sprite.cs" />
     <Compile Include="src\AssetStore.cs" />
     <Compile Include="src\entities\Interactable.cs" />
     <Compile Include="src\entities\InteractableObstacle.cs" />
     <Compile Include="src\entities\RetractableWall.cs" />
     <Compile Include="src\EntityFactory.cs" />
-    <Compile Include="src\RectangleF.cs" />
+    <Compile Include="src\engine\RectangleF.cs" />
     <Compile Include="src\Room.cs" />
     <Compile Include="src\entities\Player.cs" />
     <Compile Include="src\entities\Entity.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="src\entities\Lever.cs" />
     <Compile Include="src\entities\Switch.cs" />
     <Compile Include="src\entities\Obstacle.cs" />
+    <Compile Include="src\engine\VectorExtensions.cs" />
     <Compile Include="src\World.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,5 +90,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
