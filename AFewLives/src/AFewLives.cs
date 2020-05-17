@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace AFewLives
 {
@@ -21,6 +22,8 @@ namespace AFewLives
         private Controls controls = new Controls();
         private bool paused = false;
         private Camera2D cam = new Camera2D();
+        private Effect fadeEffect;
+        private RenderTarget2D renderTarget;
 
         private AFewLives()
         {
@@ -38,6 +41,10 @@ namespace AFewLives
         protected override void Initialize()
         {
             base.Initialize();
+
+            renderTarget = new RenderTarget2D(GraphicsDevice,
+                                              GraphicsDevice.PresentationParameters.BackBufferWidth,
+                                              GraphicsDevice.PresentationParameters.BackBufferHeight);
         }
 
         protected override void LoadContent()
@@ -45,6 +52,7 @@ namespace AFewLives
             spriteBatch = new SpriteBatch(GraphicsDevice);
             assets = new AssetStore(Content, GraphicsDevice, new AnimationFactory());
             world = new World(new EntityFactory(assets));
+            fadeEffect = Content.Load<Effect>("effects/Fade");
         }
 
         protected override void Update(GameTime gameTime)
@@ -55,13 +63,39 @@ namespace AFewLives
             base.Update(gameTime);
         }
 
+        private int milli = 0;
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.HotPink);
+            GraphicsDevice.SetRenderTarget(renderTarget);
+
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, cam.GetTransform(GraphicsDevice.Viewport));
+            GraphicsDevice.Clear(Color.HotPink);
             world.Draw(spriteBatch);
             spriteBatch.End();
-            base.Draw(gameTime);
+
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Clear(Color.Black);
+
+            float fadeTime = 300f;
+            milli += gameTime.ElapsedGameTime.Milliseconds;
+            if (milli > 2000) milli = 0;
+            float val;
+            if (milli < fadeTime)
+            {
+                val = 1 - milli / fadeTime;
+            }
+            else if(milli <  2 * fadeTime)
+            {
+                val = (milli - fadeTime) / fadeTime;
+            }
+            else
+            {
+                val = 1f;
+            }
+            fadeEffect.Parameters["AlphaFade"].SetValue(val);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, fadeEffect);
+            spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.Black);
+            spriteBatch.End();
         }
     }
 }

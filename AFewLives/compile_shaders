@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# FXC cannot be run from MinGW, there's a bug with paths.
+cmd /C"fxc /Tfx_2_0 src\graphics\effects\Fade.fx /FoFade.xnb"
+mv Fade.xnb bin/Debug/Content/effects
