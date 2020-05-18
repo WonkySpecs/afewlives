@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using AFewLives.Entities;
-using System;
 
 namespace AFewLives
 {
@@ -50,7 +49,9 @@ namespace AFewLives
         {
             Player.Update(delta, inputs, ActiveRoom);
             ActiveRoom.Update(delta, Player);
-            cam.pos = Player.Pos;
+            cam.targetPos = Player.Pos;
+            cam.Update(delta);
+            if (inputs.WasPressed(Control.ToggleZoom)) cam.targetZoom = cam.targetZoom > 1 ? 1 : 5;
 
             if (transitionState != TransitionState.None)
             {
@@ -63,6 +64,7 @@ namespace AFewLives
                         transitionState = TransitionState.FadingIn;
                         ActiveRoom = transitioningTo.containingRoom;
                         Player.Pos = transitioningTo.Pos;
+                        cam.pos = Player.Pos;
                     }
                     else
                     {

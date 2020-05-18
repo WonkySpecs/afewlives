@@ -18,6 +18,7 @@ namespace AFewLives
             isPressed[(int)Control.MoveDown] = keyboard.IsKeyDown(Keys.S);
             isPressed[(int)Control.Interact] = keyboard.IsKeyDown(Keys.E);
             isPressed[(int)Control.ToggleLife] = keyboard.IsKeyDown(Keys.Q);
+            isPressed[(int)Control.ToggleZoom] = keyboard.IsKeyDown(Keys.Z);
             isPressed[(int)Control.Pause] = keyboard.IsKeyDown(Keys.P);
         }
 
@@ -34,10 +35,10 @@ namespace AFewLives
 
     enum Control
     {
-        MoveLeft, MoveRight, Jump, // Alive only
-        MoveUp, MoveDown,          // Ghost only
-        Interact,                  // Either
-        ToggleLife, Pause,         // Temporary debug controls
+        MoveLeft, MoveRight, Jump,     // Alive only
+        MoveUp, MoveDown,              // Ghost only
+        Interact,                      // Either
+        ToggleLife, Pause, ToggleZoom, // Temporary debug controls
         SIZE
     }
 }
