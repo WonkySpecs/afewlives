@@ -46,12 +46,11 @@ namespace AFewLives
             all.AddRange(interactables);
             all.AddRange(platforms);
             all.AddRange(doors);
-            Color tint = playerIsDead ? Color.White : Color.DarkBlue;
             foreach (Obstacle o in all)
             {
                 if(!o.inSpiritRealm || playerIsDead)
                 {
-                    o.Draw(spriteBatch, tint);
+                    o.Draw(spriteBatch, Color.DarkBlue);
                 }
             }
         }

@@ -22,7 +22,7 @@ namespace AFewLives
         private Controls controls = new Controls();
         private bool paused = false;
         private Camera2D cam = new Camera2D();
-        private Effect fadeEffect;
+        private Effect postProcessEffect;
         private RenderTarget2D renderTarget;
 
         private AFewLives()
@@ -52,7 +52,7 @@ namespace AFewLives
             spriteBatch = new SpriteBatch(GraphicsDevice);
             assets = new AssetStore(Content, GraphicsDevice, new AnimationFactory());
             world = new World(new EntityFactory(assets));
-            fadeEffect = Content.Load<Effect>("effects/Fade");
+            postProcessEffect = Content.Load<Effect>("effects/PostProcess");
         }
 
         protected override void Update(GameTime gameTime)
@@ -74,9 +74,10 @@ namespace AFewLives
 
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(Color.Black);
-
-            fadeEffect.Parameters["AlphaFade"].SetValue(world.FadeAmount);
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, fadeEffect);
+            
+            postProcessEffect.Parameters["AlphaFade"].SetValue(world.FadeAmount);
+            postProcessEffect.Parameters["ColorDrain"].SetValue(world.ColorDrain);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, postProcessEffect);
             spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.Black);
             spriteBatch.End();
         }

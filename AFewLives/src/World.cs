@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using AFewLives.Entities;
+using System;
 
 namespace AFewLives
 {
@@ -12,17 +13,21 @@ namespace AFewLives
         private readonly RoomFactory roomFactory;
         public Room ActiveRoom { get; set; }
 
-        private readonly static float transitionLength = 10;
-        private float transitionElapsed = 0;
-        private TransitionState transitionState = TransitionState.None;
+        private readonly static float fadeLength = 10;
+        private float fadeElapsed = 0;
+        private Fade fadeState = Fade.None;
         private Door transitioningTo;
         public float FadeAmount {
             get {
-                if (transitionState == TransitionState.None) return 1f;
-                return transitionState == TransitionState.FadingIn ? transitionElapsed / transitionLength
-                                                                   : 1 - (transitionElapsed / transitionLength);
+                if (fadeState == Fade.None) return 1f;
+                return fadeState == Fade.FadingIn ? fadeElapsed / fadeLength
+                                                  : 1 - (fadeElapsed / fadeLength);
             }
         }
+
+        public float ColorDrain { get => colorDrainElapsed / colorDrainLength; }
+        private float colorDrainElapsed = 0;
+        private float colorDrainLength = 20;
 
         public World(EntityFactory entityFactory)
         {
@@ -53,24 +58,33 @@ namespace AFewLives
             cam.Update(delta);
             if (inputs.WasPressed(Control.ToggleZoom)) cam.targetZoom = cam.targetZoom > 1 ? 1 : 5;
 
-            if (transitionState != TransitionState.None)
+            if (fadeState != Fade.None)
             {
-                transitionElapsed += delta;
-                if (transitionElapsed > transitionLength)
+                fadeElapsed += delta;
+                if (fadeElapsed > fadeLength)
                 {
-                    transitionElapsed = 0;
-                    if (transitionState == TransitionState.FadingOut)
+                    fadeElapsed = 0;
+                    if (fadeState == Fade.FadingOut)
                     {
-                        transitionState = TransitionState.FadingIn;
+                        fadeState = Fade.FadingIn;
                         ActiveRoom = transitioningTo.containingRoom;
                         Player.Pos = transitioningTo.Pos;
                         cam.pos = Player.Pos;
                     }
                     else
                     {
-                        transitionState = TransitionState.None;
+                        fadeState = Fade.None;
                     }
                 }
+            }
+
+            if (Player.IsGhost && ColorDrain < colorDrainLength)
+            {
+                colorDrainElapsed = Math.Min(colorDrainLength, colorDrainElapsed + delta);
+            }
+            if (!Player.IsGhost && ColorDrain > 0)
+            {
+                colorDrainElapsed = Math.Max(0, colorDrainElapsed - delta);
             }
         }
 
@@ -82,12 +96,12 @@ namespace AFewLives
 
         public void MoveTo(Door door)
         {
-            transitionState = TransitionState.FadingOut;
+            fadeState = Fade.FadingOut;
             transitioningTo = door;
         }
     }
 
-    enum TransitionState
+    enum Fade
     {
         None, FadingIn, FadingOut
     }
