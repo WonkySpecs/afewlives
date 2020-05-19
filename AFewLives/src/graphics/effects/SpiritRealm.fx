@@ -11,8 +11,7 @@ struct VertexShaderOutput
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR
 {
     float4 col = tex2D(tex, input.texCoord);
-    col.a = visibility;
-    return col;
+    return float4(0, 0.8, 0.4, visibility) * col;
 }
 
 technique SpiritRealm

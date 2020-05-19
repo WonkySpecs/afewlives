@@ -51,7 +51,6 @@ namespace AFewLives
  
         public void DrawSpiritThings(SpriteBatch spriteBatch)
         {
-            Console.WriteLine(thingsInSpiritRealm.Count);
             foreach (Obstacle o in thingsInSpiritRealm)
             {
                 o.Draw(spriteBatch, Color.DarkBlue);

@@ -95,11 +95,11 @@ namespace AFewLives
 
             // Using immediate to make shaders simpler.
             // Probably doesn't change performance as everything uses different textures anyway
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, spiritEffect, transform);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, null, null, null, spiritEffect, transform);
             ActiveRoom.DrawSpiritThings(spriteBatch);
             spriteBatch.End();
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, solidEffect, transform);
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, solidEffect, transform);
             ActiveRoom.DrawSolidThings(spriteBatch);
             Player.Draw(spriteBatch);
             spriteBatch.End();
