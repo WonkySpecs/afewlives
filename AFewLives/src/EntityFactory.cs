@@ -37,10 +37,11 @@ namespace AFewLives
         }
 
         public RetractableWall RetractableWall(Vector2 pos, Vector2 retractedSize,
-                                               Vector2 fullSize, int retractTime)
+                                               Vector2 fullSize, int retractTime,
+                                               bool inSpiritRealm=false)
         {
             return new RetractableWall(assets.Stripy(fullSize), retractedSize,
-                                       fullSize, pos, false, false, retractTime);
+                                       fullSize, pos, inSpiritRealm, false, retractTime);
         }
 
         public Spikes Spikes(Vector2 pos, Vector2 size)

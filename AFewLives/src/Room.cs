@@ -128,11 +128,35 @@ namespace AFewLives
         public Room Room2()
         {
             Room room = new Room();
-            Vector2 hWallSize = new Vector2(1500, 300);
-            room.walls.Add(entityFactory.Wall(new Vector2(-100, -100), hWallSize));
-            room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));
-            room.doors.Add(entityFactory.Door(new Vector2(100, 784), room));
-            room.doors.Add(entityFactory.Door(new Vector2(150, 784), room));
+            int topGap = 150;
+            int pitWidth = 450;
+            int pitHeight = 400;
+            var roof = entityFactory.Wall(new Vector2(-100, -500), new Vector2(1500, 500));
+            var leftWall = entityFactory.Wall(new Vector2(-800, -500), new Vector2(700, 2000));
+            var leftPlatform = entityFactory.Wall(new Vector2(-100, roof.Hitbox.Bottom + topGap), new Vector2(200, 800));
+            var rightPlatform = entityFactory.Wall(new Vector2(leftPlatform.Hitbox.Right + pitWidth,
+                                                               leftPlatform.Pos.Y),
+                                                   new Vector2(topGap, 800));
+            var rightWall = entityFactory.Wall(new Vector2(rightPlatform.Hitbox.Right, -500), new Vector2(700, 2000));
+            var pitFloor = entityFactory.Wall(new Vector2(-500, leftPlatform.Pos.Y + pitHeight), new Vector2(2000, 500));
+            var ghostDoor = entityFactory.RetractableWall(new Vector2(leftPlatform.Pos.X + 100, 0),
+                                                          new Vector2(10, 0), new Vector2(10, topGap),
+                                                          50, true);
+            var rightDoor = entityFactory.RetractableWall(new Vector2(rightPlatform.Pos.X + 50, 0),
+                                                          new Vector2(10, 0), new Vector2(10, topGap),
+                                                          50, false);
+            room.walls.AddRange(new List<Obstacle>(){ roof, leftWall, leftPlatform, rightPlatform, rightWall, pitFloor,
+                                                      ghostDoor, rightDoor });
+
+            room.interactables.Add(entityFactory.Lever(new Vector2(leftPlatform.Pos.X + 50, leftPlatform.Pos.Y - 8),
+                                                       new List<Activatable>() { ghostDoor }, false));
+
+            room.interactables.Add(entityFactory.Lever(new Vector2(rightPlatform.Pos.X + 20, rightPlatform.Pos.Y - 8),
+                                                       new List<Activatable>() { rightDoor }, false));
+
+            room.doors.Add(entityFactory.Door(new Vector2(leftPlatform.Pos.X + 20, leftPlatform.Pos.Y - 16), room));
+            room.doors.Add(entityFactory.Door(new Vector2(rightWall.Pos.X - 20, rightPlatform.Pos.Y - 16), room));
+
             room.PartitionThings();
             return room;
         }
