@@ -31,9 +31,9 @@ namespace AFewLives
             return new Obstacle(assets.Stripy(size), size, pos, true);
         }
 
-        public Lever Lever(Vector2 pos, List<Activatable> targets, bool inSpiritRealm)
+        public Lever Lever(Vector2 pos, List<Activatable> targets, bool inSpiritRealm=false, bool startOn=false)
         {
-            return new Lever(assets.LeverSprite(), pos, new Rectangle(0, 0, 16, 8), targets, true);
+            return new Lever(assets.LeverSprite(), pos, new Rectangle(0, 0, 16, 8), targets, startOn, inSpiritRealm);
         }
 
         public RetractableWall RetractableWall(Vector2 pos, Vector2 retractedSize,

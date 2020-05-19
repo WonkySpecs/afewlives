@@ -9,7 +9,8 @@ namespace AFewLives.Entities
         private readonly List<Activatable> targets;
         private bool on;
 
-        public Lever(Sprite sprite, Vector2 pos, Rectangle hitbox, List<Activatable> targets, bool initialState) : base(sprite, pos, hitbox) 
+        public Lever(Sprite sprite, Vector2 pos, Rectangle hitbox, List<Activatable> targets,
+                     bool initialState, bool inSpiritRealm) : base(sprite, pos, hitbox, inSpiritRealm) 
         {
             this.targets = targets;
             on = initialState;

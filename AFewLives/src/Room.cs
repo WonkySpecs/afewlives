@@ -116,7 +116,7 @@ namespace AFewLives
             room.platforms.Add(platform);
             leverTargets.Add(platform);
 
-            room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), leverTargets, false));
+            room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), leverTargets));
 
             room.doors.Add(entityFactory.Door(new Vector2(400, 284), room));
 
@@ -149,10 +149,10 @@ namespace AFewLives
                                                       ghostDoor, rightDoor });
 
             room.interactables.Add(entityFactory.Lever(new Vector2(leftPlatform.Pos.X + 50, leftPlatform.Pos.Y - 8),
-                                                       new List<Activatable>() { ghostDoor }, false));
+                                                       new List<Activatable>() { ghostDoor }, true));
 
             room.interactables.Add(entityFactory.Lever(new Vector2(rightPlatform.Pos.X + 20, rightPlatform.Pos.Y - 8),
-                                                       new List<Activatable>() { rightDoor }, false));
+                                                       new List<Activatable>() { rightDoor }));
 
             room.doors.Add(entityFactory.Door(new Vector2(leftPlatform.Pos.X + 20, leftPlatform.Pos.Y - 16), room));
             room.doors.Add(entityFactory.Door(new Vector2(rightWall.Pos.X - 20, rightPlatform.Pos.Y - 16), room));

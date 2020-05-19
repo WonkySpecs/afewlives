@@ -50,28 +50,35 @@ namespace AFewLives.Entities
                     _vel.Y = -8f;
                 }
                 _vel.Y += 0.45f;
-
-                if (input.WasPressed(Control.Interact))
-                {
-                    List<InteractableObstacle> interactables = new List<InteractableObstacle>(room.interactables);
-                    interactables.AddRange(room.doors);
-                    foreach (InteractableObstacle i in interactables)
-                    {
-                        if (CollidesWith(i))
-                        {
-                            i.InteractWith();
-                            break;
-                        }
-                    }
-                }
             }
-
             Vector2 newPos = _vel * delta + _pos;
             Vector2 correction = PositionCorrection(newPos, room.walls);
             OnGround = correction.Y  < 0;
             _pos = newPos + correction;
             if (correction.X != 0) { _vel.X = 0; }
             if (correction.Y != 0) { _vel.Y = 0; }
+
+            // Interaction
+            if (input.WasPressed(Control.Interact))
+            {
+                List<InteractableObstacle> interactables = new List<InteractableObstacle>();
+                foreach(InteractableObstacle o in room.interactables)
+                {
+                    if (IsGhost && o.inSpiritRealm || !IsGhost && ! o.inSpiritRealm)
+                    {
+                        interactables.Add(o);
+                    }
+                }
+                interactables.AddRange(room.doors);
+                foreach (InteractableObstacle i in interactables)
+                {
+                    if (CollidesWith(i))
+                    {
+                        i.InteractWith();
+                        break;
+                    }
+                }
+            }
         }
 
         private Vector2 PositionCorrection(Vector2 projectedPos, List<Obstacle> obstacles)
