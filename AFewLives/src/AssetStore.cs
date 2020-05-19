@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System;
 
 namespace AFewLives
 {
@@ -87,6 +88,41 @@ namespace AFewLives
                 for(int x = 0; x < w; x++)
                 {
                     data[y * w + x] = new Color(val, val, val);
+                }
+            }
+            tex.SetData(data);
+            return tex;
+        }
+
+        public Texture2D Patchy(Vector2 size, int patchW=25, int patchH=25)
+        {
+            if (size.X % patchW != 0 || size.Y % patchH != 0)
+            {
+                throw new Exception("Patchy texture patch sizes must divide into whole size");
+            }
+
+            int w = (int)size.X;
+            int h = (int)size.Y;
+            int gridW = w / patchW;
+            int gridH = h / patchH;
+            var rng = new Random();
+            var patches = new Color[gridW, gridH];
+            for (int u = 0; u < gridW; u++)
+            {
+                for (int v = 0; v < gridH; v++)
+                {
+                    double val = rng.NextDouble();
+                    patches[u, v] = new Color((float)val, (float)val, (float)val, 1);
+                }
+            }
+
+            Texture2D tex = new Texture2D(graphicsDevice, w, h);
+            Color[] data = new Color[w * h];
+            for (int y = 0; y < h; y++)
+            {
+                for(int x = 0; x < w; x++)
+                {
+                    data[y * w + x] = patches[x / patchW, y / patchH];
                 }
             }
             tex.SetData(data);

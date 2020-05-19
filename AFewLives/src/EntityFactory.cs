@@ -23,7 +23,7 @@ namespace AFewLives
 
         public Obstacle Wall(Vector2 pos, Vector2 size)
         {
-            return new Obstacle(assets.Stripy(size), size, pos);
+            return new Obstacle(assets.Patchy(size), size, pos);
         }
 
         public Obstacle SpiritWall(Vector2 pos, Vector2 size)
