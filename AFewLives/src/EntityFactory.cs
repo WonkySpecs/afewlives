@@ -26,6 +26,11 @@ namespace AFewLives
             return new Obstacle(assets.Stripy(size), size, pos);
         }
 
+        public Obstacle SpiritWall(Vector2 pos, Vector2 size)
+        {
+            return new Obstacle(assets.Stripy(size), size, pos, true);
+        }
+
         public Lever Lever(Vector2 pos, List<Activatable> targets, bool inSpiritRealm)
         {
             return new Lever(assets.LeverSprite(), pos, new Rectangle(0, 0, 16, 8), targets, true);

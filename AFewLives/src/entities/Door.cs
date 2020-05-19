@@ -11,6 +11,7 @@ namespace AFewLives.Entities
         public Door(Texture2D tex, Vector2 pos, Room containingRoom) : base(tex, pos)
         {
             this.containingRoom = containingRoom;
+            this.inSpiritRealm = false;
         }
 
         public void LinkDoor(Door leadsTo, World world)

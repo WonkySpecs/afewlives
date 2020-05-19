@@ -23,6 +23,8 @@ namespace AFewLives
         private bool paused = false;
         private Camera2D cam = new Camera2D();
         private Effect postProcessEffect;
+        private Effect spiritEffect;
+        private Effect solidEffect;
         private RenderTarget2D renderTarget;
 
         private AFewLives()
@@ -53,6 +55,8 @@ namespace AFewLives
             assets = new AssetStore(Content, GraphicsDevice, new AnimationFactory());
             world = new World(new EntityFactory(assets));
             postProcessEffect = Content.Load<Effect>("effects/PostProcess");
+            spiritEffect = Content.Load<Effect>("effects/SpiritRealm");
+            solidEffect  = Content.Load<Effect>("effects/SolidThing");
         }
 
         protected override void Update(GameTime gameTime)
@@ -67,16 +71,13 @@ namespace AFewLives
         {
             GraphicsDevice.SetRenderTarget(renderTarget);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, cam.GetTransform(GraphicsDevice.Viewport));
             GraphicsDevice.Clear(Color.HotPink);
-            world.Draw(spriteBatch);
-            spriteBatch.End();
+            world.Draw(spriteBatch, spiritEffect, solidEffect, cam.GetTransform(GraphicsDevice.Viewport));
 
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(Color.Black);
-            
+ 
             postProcessEffect.Parameters["AlphaFade"].SetValue(world.FadeAmount);
-            postProcessEffect.Parameters["ColorDrain"].SetValue(world.ColorDrain);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, postProcessEffect);
             spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.Black);
             spriteBatch.End();

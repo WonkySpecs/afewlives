@@ -16,6 +16,8 @@ namespace AFewLives
         public readonly List<MovingPlatform> platforms = new List<MovingPlatform>();
         public readonly List<Door> doors = new List<Door>();
 
+        public readonly List<Entity> thingsInSpiritRealm = new List<Entity>();
+        public readonly List<Entity> solidThings = new List<Entity>();
         public void Update(float delta, Player player)
         {
             foreach(InteractableObstacle e in interactables)
@@ -39,19 +41,33 @@ namespace AFewLives
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, bool playerIsDead)
+        public void DrawSolidThings(SpriteBatch spriteBatch)
+        {
+            foreach (Obstacle o in solidThings)
+            {
+                o.Draw(spriteBatch, Color.DarkBlue);
+            }
+        }
+ 
+        public void DrawSpiritThings(SpriteBatch spriteBatch)
+        {
+            Console.WriteLine(thingsInSpiritRealm.Count);
+            foreach (Obstacle o in thingsInSpiritRealm)
+            {
+                o.Draw(spriteBatch, Color.DarkBlue);
+            }
+        }
+
+        public void PartitionThings()
         {
             List<Obstacle> all = new List<Obstacle>(walls);
-            all.AddRange(spikes);
             all.AddRange(interactables);
             all.AddRange(platforms);
             all.AddRange(doors);
-            foreach (Obstacle o in all)
+            all.AddRange(spikes);
+            foreach(Obstacle e in all)
             {
-                if(!o.inSpiritRealm || playerIsDead)
-                {
-                    o.Draw(spriteBatch, Color.DarkBlue);
-                }
+                (e.inSpiritRealm ? thingsInSpiritRealm : solidThings).Add(e);
             }
         }
     }
@@ -105,6 +121,8 @@ namespace AFewLives
 
             room.doors.Add(entityFactory.Door(new Vector2(400, 284), room));
 
+            room.walls.Add(entityFactory.SpiritWall(new Vector2(750, 300), new Vector2(100, 100)));
+            room.PartitionThings();
             return room;
         }
 
@@ -116,6 +134,7 @@ namespace AFewLives
             room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));
             room.doors.Add(entityFactory.Door(new Vector2(100, 784), room));
             room.doors.Add(entityFactory.Door(new Vector2(150, 784), room));
+            room.PartitionThings();
             return room;
         }
 
@@ -126,6 +145,7 @@ namespace AFewLives
             room.walls.Add(entityFactory.Wall(new Vector2(-100, -100), hWallSize));
             room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));
             room.doors.Add(entityFactory.Door(new Vector2(100, 784), room));
+            room.PartitionThings();
             return room;
         }
     }

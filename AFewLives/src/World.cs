@@ -88,10 +88,21 @@ namespace AFewLives
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Effect spiritEffect, Effect solidEffect, Matrix transform)
         {
-            ActiveRoom.Draw(spriteBatch, Player.IsGhost);
+            spiritEffect.Parameters["visibility"].SetValue(ColorDrain);
+            solidEffect.Parameters["colorDrain"].SetValue(ColorDrain);
+
+            // Using immediate to make shaders simpler.
+            // Probably doesn't change performance as everything uses different textures anyway
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, spiritEffect, transform);
+            ActiveRoom.DrawSpiritThings(spriteBatch);
+            spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, solidEffect, transform);
+            ActiveRoom.DrawSolidThings(spriteBatch);
             Player.Draw(spriteBatch);
+            spriteBatch.End();
         }
 
         public void MoveTo(Door door)
