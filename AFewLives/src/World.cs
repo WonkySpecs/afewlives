@@ -54,7 +54,7 @@ namespace AFewLives
         {
             Player.Update(delta, inputs, ActiveRoom);
             ActiveRoom.Update(delta, Player);
-            cam.targetPos = Player.Pos;
+            ActiveRoom.SetCameraAim(cam, Player);
             cam.Update(delta);
             if (inputs.WasPressed(Control.ToggleZoom)) cam.targetZoom = cam.targetZoom > 1 ? 1 : 5;
 

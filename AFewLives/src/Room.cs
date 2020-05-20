@@ -15,9 +15,32 @@ namespace AFewLives
         public readonly List<Spikes> spikes = new List<Spikes>();
         public readonly List<MovingPlatform> platforms = new List<MovingPlatform>();
         public readonly List<Door> doors = new List<Door>();
+        public readonly Dictionary<RectangleF, CameraAim> cameraZones = new Dictionary<RectangleF, CameraAim>();
+        public readonly CameraAim defaultCameraAim;
 
         public readonly List<Entity> thingsInSpiritRealm = new List<Entity>();
         public readonly List<Entity> solidThings = new List<Entity>();
+
+        public void SetCameraAim(Camera2D cam, Player player) {
+            CameraAim aim = defaultCameraAim;
+            foreach (var zone in cameraZones)
+            {
+                if (player.CollidesWith(zone.Key))
+                {
+                    aim = zone.Value;
+                    break;
+                }
+            }
+            aim.AimCamera(cam, player.Pos);
+        }
+
+        public Room()
+        {
+            defaultCameraAim = new CameraAim(1);
+            cameraZones.Add(new RectangleF(500, 100, 150, 200), new CameraAim(0.5f));
+            cameraZones.Add(new RectangleF(200, 100, 100, 200), new CameraAim(5f, new Vector2(0, 100)));
+        }
+
         public void Update(float delta, Player player)
         {
             foreach(InteractableObstacle e in interactables)

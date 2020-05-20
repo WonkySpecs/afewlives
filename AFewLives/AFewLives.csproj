@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\engine\Camera2D.cs" />
+    <Compile Include="src\engine\CameraAim.cs" />
     <Compile Include="src\engine\Controls.cs" />
     <Compile Include="src\entities\Activatable.cs" />
     <Compile Include="src\entities\Door.cs" />

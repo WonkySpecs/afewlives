@@ -46,10 +46,16 @@ namespace AFewLives.Entities
             Draw(batch, Color.White);
         }
 
+
+        public bool CollidesWith(RectangleF hb)
+        {
+            RectangleF collision = CollisionWith(hb);
+            return collision.Width > 0 && collision.Height > 0;
+        }
+
         public bool CollidesWith(Entity e)
         {
-            RectangleF collision = CollisionWith(e.Hitbox);
-            return collision.Width > 0 && collision.Height > 0;
+            return CollidesWith(e.Hitbox);
         }
 
         public RectangleF CollisionWith(RectangleF hb2)
