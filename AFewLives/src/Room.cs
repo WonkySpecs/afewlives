@@ -15,30 +15,19 @@ namespace AFewLives
         public readonly List<Spikes> spikes = new List<Spikes>();
         public readonly List<MovingPlatform> platforms = new List<MovingPlatform>();
         public readonly List<Door> doors = new List<Door>();
-        public readonly Dictionary<RectangleF, CameraAim> cameraZones = new Dictionary<RectangleF, CameraAim>();
-        public readonly CameraAim defaultCameraAim;
+        private readonly Dictionary<RectangleF, CameraAim> cameraZones = new Dictionary<RectangleF, CameraAim>();
+        private readonly CameraAim defaultCameraAim;
 
         public readonly List<Entity> thingsInSpiritRealm = new List<Entity>();
         public readonly List<Entity> solidThings = new List<Entity>();
 
-        public void SetCameraAim(Camera2D cam, Player player) {
-            CameraAim aim = defaultCameraAim;
-            foreach (var zone in cameraZones)
-            {
-                if (player.CollidesWith(zone.Key))
-                {
-                    aim = zone.Value;
-                    break;
-                }
-            }
-            aim.AimCamera(cam, player.Pos);
-        }
+        private readonly Color fgTint;
 
-        public Room()
+        public Room(Color fgTint, Dictionary<RectangleF, CameraAim> cameraZones=null, CameraAim? defaultCameraAim=null)
         {
-            defaultCameraAim = new CameraAim(1);
-            cameraZones.Add(new RectangleF(500, 100, 150, 200), new CameraAim(0.5f));
-            cameraZones.Add(new RectangleF(200, 100, 100, 200), new CameraAim(5f, new Vector2(0, 100)));
+            this.defaultCameraAim = defaultCameraAim ?? new CameraAim(1);
+            this.cameraZones = cameraZones ?? new Dictionary<RectangleF, CameraAim>();
+            this.fgTint = fgTint;
         }
 
         public void Update(float delta, Player player)
@@ -68,7 +57,7 @@ namespace AFewLives
         {
             foreach (Obstacle o in solidThings)
             {
-                o.Draw(spriteBatch, Color.DarkBlue);
+                o.Draw(spriteBatch, fgTint);
             }
         }
  
@@ -76,8 +65,21 @@ namespace AFewLives
         {
             foreach (Obstacle o in thingsInSpiritRealm)
             {
-                o.Draw(spriteBatch, Color.DarkBlue);
+                o.Draw(spriteBatch, Color.White);
             }
+        }
+
+        public void SetCameraAim(Camera2D cam, Player player) {
+            CameraAim aim = defaultCameraAim;
+            foreach (var zone in cameraZones)
+            {
+                if (player.CollidesWith(zone.Key))
+                {
+                    aim = zone.Value;
+                    break;
+                }
+            }
+            aim.AimCamera(cam, player.Pos);
         }
 
         public void PartitionThings()
@@ -104,7 +106,10 @@ namespace AFewLives
 
         public Room Room1()
         {
-            Room room = new Room();
+            var cameraZones = new Dictionary<RectangleF, CameraAim>();
+            cameraZones.Add(new RectangleF(500, 100, 150, 200), new CameraAim(0.5f));
+            cameraZones.Add(new RectangleF(200, 100, 100, 200), new CameraAim(5f, new Vector2(0, 100)));
+            Room room = new Room(Color.DarkBlue, cameraZones);
             Vector2 hWallSize = new Vector2(1500, 300);
             room.walls.Add(entityFactory.Wall(new Vector2(-100, -100), hWallSize));
             room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));
@@ -150,7 +155,7 @@ namespace AFewLives
 
         public Room Room2()
         {
-            Room room = new Room();
+            Room room = new Room(new Color(140, 0, 100));
             int topGap = 150;
             int pitWidth = 450;
             int pitHeight = 400;
@@ -186,7 +191,7 @@ namespace AFewLives
 
         public Room Room3()
         {
-            Room room = new Room();
+            Room room = new Room(Color.DarkGoldenrod);
             Vector2 hWallSize = new Vector2(1500, 300);
             room.walls.Add(entityFactory.Wall(new Vector2(-100, -100), hWallSize));
             room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));

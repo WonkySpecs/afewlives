@@ -71,7 +71,7 @@ namespace AFewLives
         {
             GraphicsDevice.SetRenderTarget(renderTarget);
 
-            GraphicsDevice.Clear(Color.HotPink);
+            GraphicsDevice.Clear(new Color(0.3f, 0.3f, 0.3f, 1));
             world.Draw(spriteBatch, spiritEffect, solidEffect, cam.GetTransform(GraphicsDevice.Viewport));
 
             GraphicsDevice.SetRenderTarget(null);
