@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System;
+using FNAExtensions;
 
 namespace AFewLives
 {
@@ -123,6 +124,30 @@ namespace AFewLives
                 for(int x = 0; x < w; x++)
                 {
                     data[y * w + x] = patches[x / patchW, y / patchH];
+                }
+            }
+            tex.SetData(data);
+            return tex;
+        }
+
+        public Texture2D DarkCentre(Vector2 size)
+        {
+            int w = (int)size.X;
+            int h = (int)size.Y;
+            Texture2D tex = new Texture2D(graphicsDevice, w, h);
+            Color[] data = new Color[w * h];
+            var rng = new Random();
+            var bands = new float[] { 0, 0.1f, 0.3f, 0.6f, 0.7f, 0.8f, 1 };
+            for (int y = 0; y < h; y++)
+            {
+                var r = (float)rng.NextDouble() * 0.1f - 0.05f;
+                for(int x = 0; x < w; x++)
+                {
+                    var edgeness = (new Vector2(x, y) / size).Add(-0.5f).Abs();
+                    edgeness.X = MathHelper.Clamp(edgeness.X + r, 0, 0.5f);
+                    edgeness.Y = MathHelper.Clamp(edgeness.Y + r, 0, 0.5f);
+                    var idx = (int)Math.Floor(Math.Max(edgeness.X, edgeness.Y) * 2 * (bands.Length - 1));
+                    data[y * w + x] = new Color(bands[idx], bands[idx], bands[idx], 1f);
                 }
             }
             tex.SetData(data);

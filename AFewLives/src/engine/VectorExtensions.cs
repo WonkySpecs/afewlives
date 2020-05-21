@@ -15,5 +15,15 @@ namespace FNAExtensions
         {
             return new Rectangle(0, 0, (int)Math.Round(v.X), (int)Math.Round(v.Y));
         }
+
+        public static Vector2 Abs(this Vector2 v)
+        {
+            return new Vector2(Math.Abs(v.X), Math.Abs(v.Y));
+        }
+
+        public static Vector2 Add(this Vector2 v, float a)
+        {
+            return new Vector2(v.X + a, v.Y + a);
+        }
     }
 }
