@@ -57,9 +57,9 @@ namespace AFewLives
             }
         }
 
-        public void DrawBackground(SpriteBatch sb, Camera2D cam)
+        public void DrawBackground(SpriteBatch sb, RenderTarget2D target, Effect effect, Matrix transform)
         {
-            bg.Draw(sb, cam);
+            bg.Draw(sb, target, effect, transform);
         }
 
         public void DrawSolidThings(SpriteBatch spriteBatch)

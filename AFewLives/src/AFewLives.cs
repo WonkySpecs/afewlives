@@ -22,11 +22,9 @@ namespace AFewLives
         private Controls controls = new Controls();
         private bool paused = false;
         private Camera2D cam = new Camera2D();
+        private Effects effects;
         private Effect postProcessEffect;
-        private Effect spiritEffect;
-        private Effect solidEffect;
-        private Effect bgEffect;
-        private RenderTarget2D renderTarget;
+        private RenderTarget2D prePostProcess;
 
         private AFewLives()
         {
@@ -45,9 +43,9 @@ namespace AFewLives
         {
             base.Initialize();
 
-            renderTarget = new RenderTarget2D(GraphicsDevice,
-                                              GraphicsDevice.PresentationParameters.BackBufferWidth,
-                                              GraphicsDevice.PresentationParameters.BackBufferHeight);
+            prePostProcess = new RenderTarget2D(GraphicsDevice,
+                                                GraphicsDevice.PresentationParameters.BackBufferWidth,
+                                                GraphicsDevice.PresentationParameters.BackBufferHeight);
         }
 
         protected override void LoadContent()
@@ -55,11 +53,11 @@ namespace AFewLives
             spriteBatch = new SpriteBatch(GraphicsDevice);
             assets = new AssetStore(Content, GraphicsDevice, new AnimationFactory());
             postProcessEffect = Content.Load<Effect>("effects/PostProcess");
-            spiritEffect = Content.Load<Effect>("effects/SpiritRealm");
-            solidEffect  = Content.Load<Effect>("effects/SolidThing");
-            bgEffect  = Content.Load<Effect>("effects/Background");
+            effects = new Effects(Content.Load<Effect>("effects/SolidThing"),
+                                  Content.Load<Effect>("effects/SpiritRealm"),
+                                  Content.Load<Effect>("effects/Background"));
             world = new World(new EntityFactory(assets),
-                              new RoomBackground(assets.BrickTile, assets.TorchLight, new Vector2(4000, 4000), spriteBatch, bgEffect)); // Hack
+                              new RoomBackground(assets.BrickTile, assets.TorchLight, new Vector2(4000, 4000), spriteBatch)); // Hack
         }
 
         protected override void Update(GameTime gameTime)
@@ -74,20 +72,15 @@ namespace AFewLives
         protected override void Draw(GameTime gameTime)
         {
             ms += gameTime.ElapsedGameTime.Milliseconds;
-            spiritEffect.Parameters["time"].SetValue(ms / 1000f);
 
-            GraphicsDevice.SetRenderTarget(renderTarget);
-
-            world.Draw(spriteBatch, spiritEffect, solidEffect, cam.GetTransform(GraphicsDevice.Viewport));
+            world.Draw(spriteBatch, prePostProcess, effects, cam.GetTransform(GraphicsDevice.Viewport));
 
             GraphicsDevice.SetRenderTarget(null);
-
             GraphicsDevice.Clear(Color.Black);
-            world.DrawBackground(spriteBatch, cam);
  
             postProcessEffect.Parameters["AlphaFade"].SetValue(world.FadeAmount);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, postProcessEffect);
-            spriteBatch.Draw(renderTarget, new Vector2(0, 0), Color.Black);
+            spriteBatch.Draw(prePostProcess, new Vector2(0, 0), Color.Black);
             spriteBatch.End();
         }
     }

@@ -88,23 +88,25 @@ namespace AFewLives
             }
         }
 
-        public void DrawBackground(SpriteBatch sb, Camera2D cam)
+        public void DrawBackground(SpriteBatch sb, Effect effect, Camera2D cam)
         {
-            ActiveRoom.DrawBackground(sb, cam);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Effect spiritEffect, Effect solidEffect, Matrix transform)
+        public void Draw(SpriteBatch spriteBatch, RenderTarget2D target, Effects effects, Matrix transform)
         {
-            spiritEffect.Parameters["visibility"].SetValue(ColorDrain);
-            solidEffect.Parameters["colorDrain"].SetValue(ColorDrain);
+            effects.spirit.Parameters["visibility"].SetValue(ColorDrain);
+            effects.solid.Parameters["colorDrain"].SetValue(ColorDrain);
+
+            ActiveRoom.DrawBackground(spriteBatch, target, effects.bg, transform);
+            spriteBatch.GraphicsDevice.SetRenderTarget(target);
 
             // Using immediate to make shaders simpler.
             // Probably doesn't change performance as everything uses different textures anyway
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, null, null, null, spiritEffect, transform);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, null, null, null, effects.spirit, transform);
             ActiveRoom.DrawSpiritThings(spriteBatch);
             spriteBatch.End();
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, solidEffect, transform);
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, effects.solid, transform);
             ActiveRoom.DrawSolidThings(spriteBatch);
             Player.Draw(spriteBatch);
             spriteBatch.End();

@@ -12,10 +12,9 @@ namespace AFewLives
         private List<Vector2> lights;
         private Texture2D tex;
         private Texture2D torchLight;
-        private Effect foo;
         private RenderTarget2D lightMask;
 
-        public RoomBackground(Texture2D tile, Texture2D torchLight, Vector2 size, SpriteBatch sb, Effect foo)
+        public RoomBackground(Texture2D tile, Texture2D torchLight, Vector2 size, SpriteBatch sb)
         {
             RenderTarget2D tex = new RenderTarget2D(sb.GraphicsDevice, (int)size.X, (int)size.Y);
             sb.GraphicsDevice.SetRenderTarget(tex);
@@ -32,27 +31,27 @@ namespace AFewLives
             this.tex = tex;
             this.torchLight = torchLight;
             lights = new List<Vector2> { new Vector2(200, 200), new Vector2(250, 300)};
-            this.foo = foo;
             lightMask = new RenderTarget2D(sb.GraphicsDevice, tex.Width, tex.Height);
             Stream s = File.Create("test.png");
             s.Dispose();
         }
 
-        public void Draw(SpriteBatch sb, Camera2D cam)
+        public void Draw(SpriteBatch sb, RenderTarget2D target, Effect effect, Matrix transform)
         {
             sb.GraphicsDevice.SetRenderTarget(lightMask);
             sb.GraphicsDevice.Clear(Color.Black);
-            sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, cam.GetTransform(sb.GraphicsDevice.Viewport));
+            sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, transform);
             foreach (Vector2 lightPos in lights)
             {
                 sb.Draw(torchLight, lightPos, Color.White);
             }
             sb.End();
 
-            sb.GraphicsDevice.SetRenderTarget(null);
+            sb.GraphicsDevice.SetRenderTarget(target);
+            sb.GraphicsDevice.Clear(Color.Black);
 
-            foo.Parameters["lightMask"].SetValue(lightMask);
-            sb.Begin(SpriteSortMode.Deferred, null, null, null, null, foo, cam.GetTransform(sb.GraphicsDevice.Viewport));
+            effect.Parameters["lightMask"].SetValue(lightMask);
+            sb.Begin(SpriteSortMode.Deferred, null, null, null, null, effect, transform);
             sb.Draw(tex, new Vector2(-1000, -1000), Color.Black);
             sb.End();
         }

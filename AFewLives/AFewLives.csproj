@@ -51,6 +51,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Effects.cs" />
     <Compile Include="src\engine\Camera2D.cs" />
     <Compile Include="src\engine\CameraAim.cs" />
     <Compile Include="src\engine\Controls.cs" />
