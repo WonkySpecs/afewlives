@@ -25,6 +25,7 @@ namespace AFewLives
         private Effect postProcessEffect;
         private Effect spiritEffect;
         private Effect solidEffect;
+        private Effect bgEffect;
         private RenderTarget2D renderTarget;
 
         private AFewLives()
@@ -53,10 +54,12 @@ namespace AFewLives
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             assets = new AssetStore(Content, GraphicsDevice, new AnimationFactory());
-            world = new World(new EntityFactory(assets));
             postProcessEffect = Content.Load<Effect>("effects/PostProcess");
             spiritEffect = Content.Load<Effect>("effects/SpiritRealm");
             solidEffect  = Content.Load<Effect>("effects/SolidThing");
+            bgEffect  = Content.Load<Effect>("effects/Background");
+            world = new World(new EntityFactory(assets),
+                              new RoomBackground(assets.BrickTile, assets.TorchLight, new Vector2(4000, 4000), spriteBatch, bgEffect)); // Hack
         }
 
         protected override void Update(GameTime gameTime)
@@ -67,15 +70,20 @@ namespace AFewLives
             base.Update(gameTime);
         }
 
+        int ms = 0;
         protected override void Draw(GameTime gameTime)
         {
+            ms += gameTime.ElapsedGameTime.Milliseconds;
+            spiritEffect.Parameters["time"].SetValue(ms / 1000f);
+
             GraphicsDevice.SetRenderTarget(renderTarget);
 
-            GraphicsDevice.Clear(new Color(0.3f, 0.3f, 0.3f, 1));
             world.Draw(spriteBatch, spiritEffect, solidEffect, cam.GetTransform(GraphicsDevice.Viewport));
 
             GraphicsDevice.SetRenderTarget(null);
+
             GraphicsDevice.Clear(Color.Black);
+            world.DrawBackground(spriteBatch, cam);
  
             postProcessEffect.Parameters["AlphaFade"].SetValue(world.FadeAmount);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, postProcessEffect);

@@ -29,13 +29,13 @@ namespace AFewLives
         private float colorDrainElapsed = 0;
         private float colorDrainLength = 20;
 
-        public World(EntityFactory entityFactory)
+        public World(EntityFactory entityFactory, RoomBackground rb)
         {
             Player = entityFactory.Player(new Vector2(400, 200));
             roomFactory = new RoomFactory(entityFactory);
-            Room room1 = roomFactory.Room1();
-            Room room2 = roomFactory.Room2();
-            Room room3 = roomFactory.Room3();
+            Room room1 = roomFactory.Room1(rb);
+            Room room2 = roomFactory.Room2(rb);
+            Room room3 = roomFactory.Room3(rb);
             rooms.Add(room1);
             rooms.Add(room2);
             rooms.Add(room3);
@@ -86,6 +86,11 @@ namespace AFewLives
             {
                 colorDrainElapsed = Math.Max(0, colorDrainElapsed - delta);
             }
+        }
+
+        public void DrawBackground(SpriteBatch sb, Camera2D cam)
+        {
+            ActiveRoom.DrawBackground(sb, cam);
         }
 
         public void Draw(SpriteBatch spriteBatch, Effect spiritEffect, Effect solidEffect, Matrix transform)

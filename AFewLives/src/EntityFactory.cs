@@ -9,7 +9,7 @@ namespace AFewLives
 {
     class EntityFactory
     {
-        private readonly AssetStore assets;
+        public readonly AssetStore assets;
 
         public EntityFactory(AssetStore assets)
         {

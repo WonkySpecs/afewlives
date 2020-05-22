@@ -22,12 +22,16 @@ namespace AFewLives
         public readonly List<Entity> solidThings = new List<Entity>();
 
         private readonly Color fgTint;
+        private readonly RoomBackground bg;
 
-        public Room(Color fgTint, Dictionary<RectangleF, CameraAim> cameraZones=null, CameraAim? defaultCameraAim=null)
+        public Room(Color fgTint,
+                    RoomBackground bg,
+                    Dictionary<RectangleF, CameraAim> cameraZones=null, CameraAim? defaultCameraAim=null)
         {
             this.defaultCameraAim = defaultCameraAim ?? new CameraAim(1);
             this.cameraZones = cameraZones ?? new Dictionary<RectangleF, CameraAim>();
             this.fgTint = fgTint;
+            this.bg = bg;
         }
 
         public void Update(float delta, Player player)
@@ -51,6 +55,11 @@ namespace AFewLives
                     spike.Update(player);
                 }
             }
+        }
+
+        public void DrawBackground(SpriteBatch sb, Camera2D cam)
+        {
+            bg.Draw(sb, cam);
         }
 
         public void DrawSolidThings(SpriteBatch spriteBatch)
@@ -104,12 +113,12 @@ namespace AFewLives
             this.entityFactory = entityFactory;
         }
 
-        public Room Room1()
+        public Room Room1(RoomBackground bg)
         {
             var cameraZones = new Dictionary<RectangleF, CameraAim>();
             cameraZones.Add(new RectangleF(500, 100, 150, 200), new CameraAim(0.5f));
             cameraZones.Add(new RectangleF(200, 100, 100, 200), new CameraAim(5f, new Vector2(0, 100)));
-            Room room = new Room(Color.DarkBlue, cameraZones);
+            Room room = new Room(Color.DarkBlue, bg, cameraZones);
             Vector2 hWallSize = new Vector2(1500, 300);
             room.walls.Add(entityFactory.Wall(new Vector2(-100, -100), hWallSize));
             room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));
@@ -153,9 +162,9 @@ namespace AFewLives
             return room;
         }
 
-        public Room Room2()
+        public Room Room2(RoomBackground bg)
         {
-            Room room = new Room(new Color(140, 0, 100));
+            Room room = new Room(new Color(140, 0, 100), bg);
             int topGap = 150;
             int pitWidth = 450;
             int pitHeight = 400;
@@ -189,9 +198,9 @@ namespace AFewLives
             return room;
         }
 
-        public Room Room3()
+        public Room Room3(RoomBackground bg)
         {
-            Room room = new Room(Color.DarkGoldenrod);
+            Room room = new Room(Color.DarkGoldenrod, bg);
             Vector2 hWallSize = new Vector2(1500, 300);
             room.walls.Add(entityFactory.Wall(new Vector2(-100, -100), hWallSize));
             room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));

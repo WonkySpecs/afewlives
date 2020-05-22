@@ -9,3 +9,6 @@ mv SpiritRealm.xnb bin/Debug/Content/effects
 
 cmd /C"fxc /Tfx_2_0 src\graphics\effects\SolidThing.fx /FoSolidThing.xnb"
 mv SolidThing.xnb bin/Debug/Content/effects
+
+cmd /C"fxc /Tfx_2_0 src\graphics\effects\Background.fx /FoBackground.xnb"
+mv Background.xnb bin/Debug/Content/effects

@@ -65,6 +65,7 @@
     <Compile Include="src\entities\RetractableWall.cs" />
     <Compile Include="src\EntityFactory.cs" />
     <Compile Include="src\engine\RectangleF.cs" />
+    <Compile Include="src\graphics\RoomBackground.cs" />
     <Compile Include="src\Room.cs" />
     <Compile Include="src\entities\Player.cs" />
     <Compile Include="src\entities\Entity.cs" />
