@@ -30,17 +30,15 @@ namespace AFewLives
             sb.GraphicsDevice.SetRenderTarget(null);
             this.tex = tex;
             this.torchLight = torchLight;
-            lights = new List<Vector2> { new Vector2(200, 200), new Vector2(250, 300)};
+            lights = new List<Vector2> { new Vector2(1400, 1200), new Vector2(1250, 1300)};
             lightMask = new RenderTarget2D(sb.GraphicsDevice, tex.Width, tex.Height);
-            Stream s = File.Create("test.png");
-            s.Dispose();
         }
 
         public void Draw(SpriteBatch sb, RenderTarget2D target, Effect effect, Matrix transform)
         {
             sb.GraphicsDevice.SetRenderTarget(lightMask);
             sb.GraphicsDevice.Clear(Color.Black);
-            sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, transform);
+            sb.Begin();
             foreach (Vector2 lightPos in lights)
             {
                 sb.Draw(torchLight, lightPos, Color.White);

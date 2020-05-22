@@ -9,8 +9,7 @@ sampler lightSampler = sampler_state
 float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 {
     float4 col = tex2D(tex, texCoord);
-    col.a *= tex2D(lightSampler, texCoord).a;
-    return col;
+    return lerp(col, tex2D(lightSampler, texCoord), 0.3);
 }
 
 technique PostProcess

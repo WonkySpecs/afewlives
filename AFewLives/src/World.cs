@@ -98,7 +98,6 @@ namespace AFewLives
             effects.solid.Parameters["colorDrain"].SetValue(ColorDrain);
 
             ActiveRoom.DrawBackground(spriteBatch, target, effects.bg, transform);
-            spriteBatch.GraphicsDevice.SetRenderTarget(target);
 
             // Using immediate to make shaders simpler.
             // Probably doesn't change performance as everything uses different textures anyway
