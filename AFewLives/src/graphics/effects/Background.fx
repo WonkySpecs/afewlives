@@ -9,7 +9,9 @@ sampler lightSampler = sampler_state
 float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 {
     float4 col = tex2D(tex, texCoord);
-    return lerp(col, tex2D(lightSampler, texCoord), 0.3);
+    float4 light = tex2D(lightSampler, texCoord);
+    col.rgb *= max(light.rgb, 0.2);
+    return col;
 }
 
 technique PostProcess
