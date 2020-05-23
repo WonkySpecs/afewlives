@@ -31,7 +31,6 @@ namespace AFewLives
 
         public World(EntityFactory entityFactory, RoomBackground rb)
         {
-            Player = entityFactory.Player(new Vector2(400, 200));
             roomFactory = new RoomFactory(entityFactory);
             Room room1 = roomFactory.Room1(rb);
             Room room2 = roomFactory.Room2(rb);
@@ -41,7 +40,8 @@ namespace AFewLives
             rooms.Add(room3);
             LinkDoors(room1.doors[0], room2.doors[0]);
             LinkDoors(room2.doors[1], room3.doors[0]);
-            ActiveRoom = rooms[0];
+            ActiveRoom = rooms[2];
+            Player = entityFactory.Player(ActiveRoom.doors[0].Pos);
         }
 
         private void LinkDoors(Door d1, Door d2)

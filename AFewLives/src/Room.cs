@@ -201,10 +201,59 @@ namespace AFewLives
         public Room Room3(RoomBackground bg)
         {
             Room room = new Room(Color.DarkGoldenrod, bg);
-            Vector2 hWallSize = new Vector2(1500, 300);
-            room.walls.Add(entityFactory.Wall(new Vector2(-100, -100), hWallSize));
-            room.walls.Add(entityFactory.Wall(new Vector2(-100, 800), hWallSize));
-            room.doors.Add(entityFactory.Door(new Vector2(100, 784), room));
+            Vector2 topLeft = new Vector2(-500, -500);
+            var gapWidth = 150;
+
+            // Solid walls
+            var ceiling = entityFactory.Wall(topLeft, new Vector2(1600, 500));
+            var leftWall = entityFactory.Wall(topLeft, new Vector2(500, 1400));
+            var floor = entityFactory.Wall(new Vector2(topLeft.X, leftWall.Hitbox.Bottom - 500), new Vector2(1600, 500));
+            var rightWall = entityFactory.Wall(new Vector2(ceiling.Hitbox.Right - 500, topLeft.Y), new Vector2(500, 1600));
+            var middleFloorLeft = entityFactory.Wall(new Vector2(topLeft.X + leftWall.Hitbox.Width,
+                                                                 (ceiling.Pos.Y + ceiling.Hitbox.Height + floor.Pos.Y) / 3),
+                                                     new Vector2(150, 200));
+            var rx = middleFloorLeft.Pos.X + middleFloorLeft.Hitbox.Width + gapWidth;
+            var middleFloorRight = entityFactory.Wall(new Vector2(rx, middleFloorLeft.Pos.Y),
+                                                      new Vector2(rightWall.Pos.X - rx, 50));
+            // Doors
+            var sideDoor = entityFactory.RetractableWall(new Vector2(middleFloorLeft.Pos.X + middleFloorLeft.Hitbox.Width - 50,
+                                                                     middleFloorLeft.Pos.Y + middleFloorLeft.Hitbox.Height),
+                                                         new Vector2(25, 0), new Vector2(25, 66), 10);
+
+            var ceilingBottom = ceiling.Pos.Y + ceiling.Hitbox.Height;
+            var doorBlockHeight = middleFloorRight.Pos.Y - ceilingBottom;
+            // TODO: Make these start retracted
+            var doorBlockLeft = entityFactory.RetractableWall(new Vector2(middleFloorRight.Pos.X + 20, ceilingBottom),
+                                                              new Vector2(20, 0), new Vector2(20, doorBlockHeight), 10);
+            var doorBlockRight = entityFactory.RetractableWall(new Vector2(middleFloorRight.Pos.X + 50, ceilingBottom),
+                                                               new Vector2(20, 0), new Vector2(20, doorBlockHeight), 10);
+
+            var gapStart = middleFloorLeft.Pos.X + middleFloorLeft.Hitbox.Width;
+            var elevator = entityFactory.MovingPlatform(new List<Vector2>() {
+                                                            new Vector2(gapStart, floor.Pos.Y),
+                                                            new Vector2(gapStart, middleFloorLeft.Pos.Y)
+                                                        },
+                                                        new Vector2(gapWidth, 10));
+            room.walls.AddRange(new List<Obstacle>() {
+                ceiling, leftWall, floor, rightWall, middleFloorLeft, middleFloorRight,
+                sideDoor, doorBlockLeft, doorBlockRight,
+                elevator
+            });
+
+            room.doors.Add(entityFactory.Door(new Vector2(rightWall.Pos.X - 100, floor.Pos.Y - 16), room));
+            room.doors.Add(entityFactory.Door(new Vector2(rightWall.Pos.X - 100, middleFloorRight.Pos.Y - 16), room));
+
+            // Levers
+            room.interactables.Add(entityFactory.Lever(new Vector2(middleFloorLeft.Pos.X + 20, middleFloorLeft.Pos.Y - 8),
+                                                       new List<Activatable>() { sideDoor, doorBlockLeft }, true));
+            room.interactables.Add(entityFactory.Lever(new Vector2(sideDoor.Pos.X - 20, floor.Pos.Y - 8),
+                                                       new List<Activatable>() {elevator, doorBlockRight}));
+            // TODO: Make this attached to the platform
+            room.interactables.Add(entityFactory.Lever(new Vector2(elevator.Pos.X + gapWidth / 2, elevator.Pos.Y - 8),
+                                                       new List<Activatable>() { elevator, doorBlockRight }));
+
+            //TODO: Revifier
+
             room.PartitionThings();
             return room;
         }
