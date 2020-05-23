@@ -232,11 +232,11 @@ namespace AFewLives
                                                             new Vector2(gapStart, floor.Pos.Y),
                                                             new Vector2(gapStart, middleFloorLeft.Pos.Y)
                                                         },
-                                                        new Vector2(gapWidth, 10));
+                                                        new Vector2(gapWidth, 10), 3, false);
+            room.platforms.Add(elevator);
             room.walls.AddRange(new List<Obstacle>() {
                 ceiling, leftWall, floor, rightWall, middleFloorLeft, middleFloorRight,
                 sideDoor, doorBlockLeft, doorBlockRight,
-                elevator
             });
 
             room.doors.Add(entityFactory.Door(new Vector2(rightWall.Pos.X - 100, floor.Pos.Y - 16), room));
