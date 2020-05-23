@@ -37,11 +37,11 @@ namespace AFewLives
         }
 
         public RetractableWall RetractableWall(Vector2 pos, Vector2 retractedSize,
-                                               Vector2 fullSize, int retractTime,
+                                               Vector2 fullSize, int retractTime, bool startRetracted=false,
                                                bool inSpiritRealm=false)
         {
             return new RetractableWall(assets.Stripy(fullSize), retractedSize,
-                                       fullSize, pos, inSpiritRealm, false, retractTime);
+                                       fullSize, pos, inSpiritRealm, startRetracted, retractTime);
         }
 
         public Spikes Spikes(Vector2 pos, Vector2 size)
@@ -55,10 +55,10 @@ namespace AFewLives
         }
 
         public MovingPlatform MovingPlatform(List<Vector2> path, Vector2 size,
-                                             float speed=3f)
+                                             float speed=3f, bool startActive=true)
         {
             return new MovingPlatform(assets.Stripy(size), path[0],
-                                      size.ToRectangle(), false, path, speed, true);
+                                      size.ToRectangle(), false, path, speed, startActive);
         }
 
         public Door Door(Vector2 pos, Room containingRoom)

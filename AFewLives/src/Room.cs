@@ -222,11 +222,10 @@ namespace AFewLives
 
             var ceilingBottom = ceiling.Pos.Y + ceiling.Hitbox.Height;
             var doorBlockHeight = middleFloorRight.Pos.Y - ceilingBottom;
-            // TODO: Make these start retracted
             var doorBlockLeft = entityFactory.RetractableWall(new Vector2(middleFloorRight.Pos.X + 20, ceilingBottom),
-                                                              new Vector2(20, 0), new Vector2(20, doorBlockHeight), 10);
+                                                              new Vector2(20, 20), new Vector2(20, doorBlockHeight), 10, true);
             var doorBlockRight = entityFactory.RetractableWall(new Vector2(middleFloorRight.Pos.X + 50, ceilingBottom),
-                                                               new Vector2(20, 0), new Vector2(20, doorBlockHeight), 10);
+                                                               new Vector2(20, 20), new Vector2(20, doorBlockHeight), 10, true);
 
             var gapStart = middleFloorLeft.Pos.X + middleFloorLeft.Hitbox.Width;
             var elevator = entityFactory.MovingPlatform(new List<Vector2>() {
