@@ -93,11 +93,11 @@ namespace AFewLives.Entities
                 {
                     if (collision.Width < collision.Height)
                     {
-                        correction.X = relVel.X > 0 ? -collision.Width : collision.Width;
+                        correction.X = collision.X > Pos.X ? -collision.Width : collision.Width;
                     }
                     else
                     {
-                        correction.Y = relVel.Y > 0 ? -collision.Height : collision.Height;
+                        correction.Y = collision.Y > Pos.Y ? -collision.Height : collision.Height;
                     }
                 }
             }
