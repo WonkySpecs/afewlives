@@ -52,7 +52,7 @@ namespace AFewLives.Entities
                 _vel.Y += 0.45f;
             }
             Vector2 newPos = _vel * delta + _pos;
-            Vector2 correction = PositionCorrection(newPos, room.walls);
+            Vector2 correction = PositionCorrection(newPos, room.Solids);
             OnGround = correction.Y  < 0;
             _pos = newPos + correction;
             if (correction.X != 0) { _vel.X = 0; }

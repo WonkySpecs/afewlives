@@ -29,45 +29,43 @@ namespace AFewLives.Entities
         public void Update(float delta, Player player)
         {
             base.Update(delta);
+            if (!active) return;
 
+            RectangleF phb = player.Hitbox;
+            var playerRiding = Math.Abs(Hitbox.Top - phb.Bottom) < 0.02
+                && phb.Right >= Hitbox.Left && phb.Left <= Hitbox.Right;
             Vector2 startPos = Pos;
             Vector2 targetPoint = path[pathTarget];
-            if (active) {
-                Vector2 d = targetPoint - Pos;
-                Vector2 oldPos = _pos;
-                if(d.Length() > speed * delta)
+            Vector2 d = targetPoint - Pos;
+            if(d.Length() > speed * delta)
+            {
+                _pos += d.WithLength(speed * delta);
+            }
+            else
+            {
+                if(continuous || (pathTarget !=0 && pathTarget != path.Count - 1))
                 {
-                    _pos += d.WithLength(speed * delta);
+                    // This will break if points are very close together.
+                    // Don't do that.
+                    _pos = targetPoint;
+                    float remainder = speed - d.Length();
+                    pathTarget = (pathTarget + 1) % path.Count;
+                    targetPoint = path[pathTarget];
+                    d = targetPoint - Pos;
+                    _pos += d.WithLength(remainder);
                 }
                 else
                 {
-                    if(continuous || (pathTarget !=0 && pathTarget != path.Count - 1))
-                    {
-                        // This will break if points are very close together.
-                        // Don't do that.
-                        _pos = targetPoint;
-                        float remainder = speed - d.Length();
-                        pathTarget = (pathTarget + 1) % path.Count;
-                        targetPoint = path[pathTarget];
-                        d = targetPoint - Pos;
-                        _pos += d.WithLength(remainder);
-                    }
-                    else
-                    {
-                        _pos = targetPoint;
-                        active = false;
-                    }
-                }
-                foreach(Obstacle o in attached)
-                {
-                    o.Pos += _pos - oldPos;
+                    _pos = targetPoint;
+                    active = false;
                 }
             }
-
+            foreach(Obstacle o in attached)
+            {
+                o.Pos += _pos - startPos;
+            }
             // If player is riding, move them by same amount
-            RectangleF phb = player.Hitbox;
-            if (Math.Abs(Hitbox.Top - phb.Bottom) < 0.02
-                && phb.Right >= Hitbox.Left && phb.Left <= Hitbox.Right)
+            if (playerRiding)
             {
                 player.MoveWithoutCollision(Pos - startPos);
             }

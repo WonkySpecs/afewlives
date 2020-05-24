@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using AFewLives.Entities;
 using Microsoft.Xna.Framework;
-using System;
 
 namespace AFewLives
 {
@@ -23,6 +22,15 @@ namespace AFewLives
 
         private readonly Color fgTint;
         private readonly RoomBackground bg;
+
+        public List<Obstacle> Solids {
+            get {
+                var ret = new List<Obstacle>(walls);
+                ret.AddRange(platforms);
+                return ret;
+            }
+        }
+
 
         public Room(Color fgTint,
                     RoomBackground bg,
@@ -246,7 +254,7 @@ namespace AFewLives
             room.interactables.Add(entityFactory.Lever(new Vector2(middleFloorLeft.Pos.X + 20, middleFloorLeft.Pos.Y - 8),
                                                        new List<Activatable>() { sideDoor, doorBlockLeft }, true));
             room.interactables.Add(entityFactory.Lever(new Vector2(sideDoor.Pos.X - 20, floor.Pos.Y - 8),
-                                                       new List<Activatable>() {elevator, doorBlockRight}));
+                                                       new List<Activatable>() {elevator, doorBlockLeft}));
             var elevatorLever = entityFactory.Lever(new Vector2(elevator.Pos.X + gapWidth / 2, elevator.Pos.Y - 8),
                                                        new List<Activatable>() { elevator, doorBlockRight });
             room.interactables.Add(elevatorLever);
