@@ -247,9 +247,10 @@ namespace AFewLives
                                                        new List<Activatable>() { sideDoor, doorBlockLeft }, true));
             room.interactables.Add(entityFactory.Lever(new Vector2(sideDoor.Pos.X - 20, floor.Pos.Y - 8),
                                                        new List<Activatable>() {elevator, doorBlockRight}));
-            // TODO: Make this attached to the platform
-            room.interactables.Add(entityFactory.Lever(new Vector2(elevator.Pos.X + gapWidth / 2, elevator.Pos.Y - 8),
-                                                       new List<Activatable>() { elevator, doorBlockRight }));
+            var elevatorLever = entityFactory.Lever(new Vector2(elevator.Pos.X + gapWidth / 2, elevator.Pos.Y - 8),
+                                                       new List<Activatable>() { elevator, doorBlockRight });
+            room.interactables.Add(elevatorLever);
+            elevator.Attach(elevatorLever);
 
             //TODO: Revifier
 

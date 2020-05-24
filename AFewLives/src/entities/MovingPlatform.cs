@@ -34,6 +34,7 @@ namespace AFewLives.Entities
             Vector2 targetPoint = path[pathTarget];
             if (active) {
                 Vector2 d = targetPoint - Pos;
+                Vector2 oldPos = _pos;
                 if(d.Length() > speed * delta)
                 {
                     _pos += d.WithLength(speed * delta);
@@ -56,6 +57,10 @@ namespace AFewLives.Entities
                         _pos = targetPoint;
                         active = false;
                     }
+                }
+                foreach(Obstacle o in attached)
+                {
+                    o.Pos += _pos - oldPos;
                 }
             }
 
