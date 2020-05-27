@@ -134,6 +134,8 @@ namespace AFewLives
         {
             fadeState = Fade.FadingOut;
             transitioningTo = door;
+            // We lose corpse if moving through a door, shame but no big deal
+            corpse = null;
         }
     }
 
