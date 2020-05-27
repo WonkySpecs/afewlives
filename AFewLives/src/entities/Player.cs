@@ -49,10 +49,10 @@ namespace AFewLives.Entities
                 {
                     _vel.Y = -8f;
                 }
-                _vel.Y += 0.45f * delta;
+                _vel.Y += Physics.GRAVITY * delta;
             }
             Vector2 newPos = _vel * delta + _pos;
-            Vector2 correction = PositionCorrection(newPos, room.Solids);
+            Vector2 correction = Physics.PositionCorrection(_pos, _vel, delta, staticHitbox, room.Solids);
             OnGround = correction.Y  < 0;
             _pos = newPos + correction;
             if (correction.X != 0) { _vel.X = 0; }
