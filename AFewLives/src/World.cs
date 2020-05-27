@@ -43,7 +43,7 @@ namespace AFewLives
             LinkDoors(room1.doors[0], room2.doors[0]);
             LinkDoors(room2.doors[1], room3.doors[0]);
             ActiveRoom = rooms[0];
-            player = entityFactory.Player(ActiveRoom.doors[0].Pos);
+            player = entityFactory.Player(new Vector2(200, 800));
         }
 
         private void LinkDoors(Door d1, Door d2)

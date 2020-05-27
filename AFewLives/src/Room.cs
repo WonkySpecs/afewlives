@@ -139,7 +139,8 @@ namespace AFewLives
             room.walls.Add(entityFactory.Wall(new Vector2(0, 750), pitSideSize));
             room.walls.Add(entityFactory.Wall(new Vector2(700, 750), pitSideSize));
 
-            room.walls.Add(entityFactory.Wall(new Vector2(900, 500), new Vector2(200, 300)));
+            var rightPlatform = entityFactory.Wall(new Vector2(900, 500), new Vector2(200, 300));
+            room.walls.Add(rightPlatform);
 
             List<RetractableWall> someRetractables = new List<RetractableWall>();
             for (int y = 300; y <= 750; y += 50)
@@ -163,7 +164,7 @@ namespace AFewLives
 
             room.interactables.Add(entityFactory.Lever(new Vector2(200, 742), leverTargets));
 
-            room.doors.Add(entityFactory.Door(new Vector2(400, 284), room));
+            room.doors.Add(entityFactory.Door(new Vector2(rightPlatform.Pos.X + 50, rightPlatform.Pos.Y - 16), room));
 
             room.walls.Add(entityFactory.SpiritWall(new Vector2(750, 300), new Vector2(100, 100)));
             room.PartitionThings();
