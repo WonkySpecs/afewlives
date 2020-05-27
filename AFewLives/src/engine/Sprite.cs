@@ -89,6 +89,15 @@ namespace AFewLives
             };
         }
 
+        public Dictionary<SpriteState, Animation> CorpseAnimations()
+        {
+            return new Dictionary<SpriteState, Animation>
+            {
+                // TODO: Using player neutral for now, add a new row to sheet for death animation
+                { SpriteState.Neutral, new Animation(0, new Vector2(16, 16), 1, 10) },
+            };
+        }
+
         public Dictionary<SpriteState, Animation> LeverAnimations()
         {
             return new Dictionary<SpriteState, Animation>

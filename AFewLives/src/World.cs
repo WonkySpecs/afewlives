@@ -8,9 +8,10 @@ namespace AFewLives
 {
     class World
     {
-        public readonly Player Player;
+        public readonly Player player;
+        private Corpse corpse;
         private readonly List<Room> rooms = new List<Room>();
-        private readonly RoomFactory roomFactory;
+        private readonly EntityFactory entityFactory;
         public Room ActiveRoom { get; set; }
 
         private readonly static float fadeLength = 10;
@@ -31,7 +32,8 @@ namespace AFewLives
 
         public World(EntityFactory entityFactory, RoomBackground rb)
         {
-            roomFactory = new RoomFactory(entityFactory);
+            this.entityFactory = entityFactory;
+            var roomFactory = new RoomFactory(entityFactory);
             Room room1 = roomFactory.Room1(rb);
             Room room2 = roomFactory.Room2(rb);
             Room room3 = roomFactory.Room3(rb);
@@ -40,8 +42,8 @@ namespace AFewLives
             rooms.Add(room3);
             LinkDoors(room1.doors[0], room2.doors[0]);
             LinkDoors(room2.doors[1], room3.doors[0]);
-            ActiveRoom = rooms[2];
-            Player = entityFactory.Player(ActiveRoom.doors[0].Pos);
+            ActiveRoom = rooms[0];
+            player = entityFactory.Player(ActiveRoom.doors[0].Pos);
         }
 
         private void LinkDoors(Door d1, Door d2)
@@ -52,10 +54,31 @@ namespace AFewLives
 
         public void Update(float delta, Controls inputs, Camera2D cam)
         {
-            Player.Update(delta, inputs, ActiveRoom);
-            ActiveRoom.Update(delta, Player);
-            ActiveRoom.SetCameraAim(cam, Player);
+            var wasGhost = player.IsGhost;
+            player.Update(delta, inputs, ActiveRoom);
+            if (corpse != null)
+            {
+                corpse.Update(delta, ActiveRoom.Solids);
+            }
+
+            ActiveRoom.Update(delta, player);
+            ActiveRoom.SetCameraAim(cam, player);
             cam.Update(delta);
+            if (wasGhost != player.IsGhost)
+            {
+                Console.WriteLine("changed");
+                if (player.IsGhost)
+                {
+                    // Spawn corpse
+                    Console.WriteLine("Died");
+                    corpse = entityFactory.Corpse(player.Pos, new Vector2(player.Vel.X, -5f));
+                }
+                else
+                {
+                    // Delete corpse
+                    corpse = null;
+                }
+            }
             if (inputs.WasPressed(Control.ToggleZoom)) cam.targetZoom = cam.targetZoom > 1 ? 1 : 5;
 
             if (fadeState != Fade.None)
@@ -68,8 +91,8 @@ namespace AFewLives
                     {
                         fadeState = Fade.FadingIn;
                         ActiveRoom = transitioningTo.containingRoom;
-                        Player.Pos = transitioningTo.Pos;
-                        cam.pos = Player.Pos;
+                        player.Pos = transitioningTo.Pos;
+                        cam.pos = player.Pos;
                     }
                     else
                     {
@@ -78,18 +101,14 @@ namespace AFewLives
                 }
             }
 
-            if (Player.IsGhost && ColorDrain < colorDrainLength)
+            if (player.IsGhost && ColorDrain < colorDrainLength)
             {
                 colorDrainElapsed = Math.Min(colorDrainLength, colorDrainElapsed + delta);
             }
-            if (!Player.IsGhost && ColorDrain > 0)
+            if (!player.IsGhost && ColorDrain > 0)
             {
                 colorDrainElapsed = Math.Max(0, colorDrainElapsed - delta);
             }
-        }
-
-        public void DrawBackground(SpriteBatch sb, Effect effect, Camera2D cam)
-        {
         }
 
         public void Draw(SpriteBatch spriteBatch, RenderTarget2D target, Effects effects, Matrix transform)
@@ -103,11 +122,13 @@ namespace AFewLives
             // Probably doesn't change performance as everything uses different textures anyway
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, null, null, null, effects.spirit, transform);
             ActiveRoom.DrawSpiritThings(spriteBatch);
+            if (player.IsGhost) player.Draw(spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, effects.solid, transform);
             ActiveRoom.DrawSolidThings(spriteBatch);
-            Player.Draw(spriteBatch);
+            if (!player.IsGhost) player.Draw(spriteBatch);
+            if (corpse != null) corpse.Draw(spriteBatch);
             spriteBatch.End();
         }
 

@@ -21,6 +21,11 @@ namespace AFewLives
             return new Player(assets.PlayerSprite, pos);
         }
 
+        public Corpse Corpse(Vector2 pos, Vector2 vel)
+        {
+            return new Corpse(assets.CorpseSprite, pos, vel);
+        }
+
         public Obstacle Wall(Vector2 pos, Vector2 size)
         {
             return new Obstacle(assets.Patchy(size), size, pos);

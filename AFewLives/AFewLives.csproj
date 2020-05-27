@@ -56,6 +56,7 @@
     <Compile Include="src\engine\CameraAim.cs" />
     <Compile Include="src\engine\Controls.cs" />
     <Compile Include="src\entities\Activatable.cs" />
+    <Compile Include="src\entities\Corpse.cs" />
     <Compile Include="src\entities\Door.cs" />
     <Compile Include="src\entities\MovingPlatform.cs" />
     <Compile Include="src\entities\Spikes.cs" />

@@ -49,7 +49,7 @@ namespace AFewLives.Entities
                 {
                     _vel.Y = -8f;
                 }
-                _vel.Y += 0.45f;
+                _vel.Y += 0.45f * delta;
             }
             Vector2 newPos = _vel * delta + _pos;
             Vector2 correction = PositionCorrection(newPos, room.Solids);

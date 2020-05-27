@@ -14,6 +14,7 @@ namespace AFewLives
         private readonly AnimationFactory animationFactory;
 
         public Sprite PlayerSprite { get => new Sprite(textures["player"], animationFactory.PlayerAnimations()); }
+        public Sprite CorpseSprite { get => new Sprite(textures["player"], animationFactory.CorpseAnimations()); }
 
         public Texture2D LeverTexture { get => textures["lever"]; }
         public Sprite LeverSprite()
