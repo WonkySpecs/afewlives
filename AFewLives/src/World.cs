@@ -66,11 +66,9 @@ namespace AFewLives
             cam.Update(delta);
             if (wasGhost != player.IsGhost)
             {
-                Console.WriteLine("changed");
                 if (player.IsGhost)
                 {
                     // Spawn corpse
-                    Console.WriteLine("Died");
                     corpse = entityFactory.Corpse(player.Pos, new Vector2(player.Vel.X, -5f));
                 }
                 else

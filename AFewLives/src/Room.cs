@@ -184,17 +184,17 @@ namespace AFewLives
                                                    new Vector2(topGap, 800));
             var rightWall = entityFactory.Wall(new Vector2(rightPlatform.Hitbox.Right, -500), new Vector2(700, 2000));
             var pitFloor = entityFactory.Wall(new Vector2(-500, leftPlatform.Pos.Y + pitHeight), new Vector2(2000, 500));
-            var ghostDoor = entityFactory.RetractableWall(new Vector2(leftPlatform.Pos.X + 100, 0),
+            var leftDoor = entityFactory.RetractableWall(new Vector2(leftPlatform.Pos.X + 100, 0),
                                                           new Vector2(10, 0), new Vector2(10, topGap),
-                                                          50, true);
+                                                          50);
             var rightDoor = entityFactory.RetractableWall(new Vector2(rightPlatform.Pos.X + 50, 0),
                                                           new Vector2(10, 0), new Vector2(10, topGap),
-                                                          50, false);
+                                                          50, false, true);
             room.walls.AddRange(new List<Obstacle>(){ roof, leftWall, leftPlatform, rightPlatform, rightWall, pitFloor,
-                                                      ghostDoor, rightDoor });
+                                                      leftDoor, rightDoor });
 
             room.interactables.Add(entityFactory.Lever(new Vector2(leftPlatform.Pos.X + 50, leftPlatform.Pos.Y - 8),
-                                                       new List<Activatable>() { ghostDoor }, true));
+                                                       new List<Activatable>() { leftDoor }, true));
 
             room.interactables.Add(entityFactory.Lever(new Vector2(rightPlatform.Pos.X + 20, rightPlatform.Pos.Y - 8),
                                                        new List<Activatable>() { rightDoor }));
