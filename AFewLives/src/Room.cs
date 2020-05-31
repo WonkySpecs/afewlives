@@ -17,6 +17,8 @@ namespace AFewLives
         private readonly Dictionary<RectangleF, CameraAim> cameraZones = new Dictionary<RectangleF, CameraAim>();
         private readonly CameraAim defaultCameraAim;
 
+        public readonly List<ParticleEmitter> particleEffects = new List<ParticleEmitter>();
+
         public readonly List<Entity> thingsInSpiritRealm = new List<Entity>();
         public readonly List<Entity> solidThings = new List<Entity>();
 
@@ -30,7 +32,6 @@ namespace AFewLives
                 return ret;
             }
         }
-
 
         public Room(Color fgTint,
                     RoomBackground bg,
@@ -62,6 +63,10 @@ namespace AFewLives
                 {
                     spike.Update(player);
                 }
+            }
+            foreach (var emitter in particleEffects)
+            {
+                emitter.Update(delta);
             }
         }
 

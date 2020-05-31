@@ -12,6 +12,7 @@ namespace AFewLives
         private Corpse corpse;
         private readonly List<Room> rooms = new List<Room>();
         private readonly EntityFactory entityFactory;
+        private readonly ParticleEmitterFactory emitterFactory;
         public Room ActiveRoom { get; set; }
 
         private readonly static float fadeLength = 10;
@@ -30,9 +31,10 @@ namespace AFewLives
         private float colorDrainElapsed = 0;
         private float colorDrainLength = 20;
 
-        public World(EntityFactory entityFactory, RoomBackground rb)
+        public World(EntityFactory entityFactory, RoomBackground rb, ParticleEmitterFactory emitterFactory)
         {
             this.entityFactory = entityFactory;
+            this.emitterFactory = emitterFactory;
             var roomFactory = new RoomFactory(entityFactory);
             Room room1 = roomFactory.Room1(rb);
             Room room2 = roomFactory.Room2(rb);
@@ -43,6 +45,7 @@ namespace AFewLives
             LinkDoors(room1.doors[0], room2.doors[0]);
             LinkDoors(room2.doors[1], room3.doors[0]);
             ActiveRoom = rooms[0];
+            ActiveRoom.particleEffects.Add(emitterFactory.GhostShimmer());
             player = entityFactory.Player(new Vector2(200, 800));
         }
 
@@ -56,6 +59,7 @@ namespace AFewLives
         {
             var wasGhost = player.IsGhost;
             player.Update(delta, inputs, ActiveRoom);
+            ActiveRoom.particleEffects[0].pos = player.Pos;
             if (corpse != null)
             {
                 corpse.Update(delta, ActiveRoom.Solids);
@@ -127,6 +131,12 @@ namespace AFewLives
             ActiveRoom.DrawSolidThings(spriteBatch);
             if (!player.IsGhost) player.Draw(spriteBatch);
             if (corpse != null) corpse.Draw(spriteBatch);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, transform);
+            foreach(var emitter in ActiveRoom.particleEffects)
+            {
+                emitter.Draw(spriteBatch);
+            }
             spriteBatch.End();
         }
 

@@ -25,6 +25,7 @@ namespace AFewLives
         private Effects effects;
         private Effect postProcessEffect;
         private RenderTarget2D prePostProcess;
+        private ParticleEmitterFactory emitterFactory;
 
         private AFewLives()
         {
@@ -56,8 +57,10 @@ namespace AFewLives
             effects = new Effects(Content.Load<Effect>("effects/SolidThing"),
                                   Content.Load<Effect>("effects/SpiritRealm"),
                                   Content.Load<Effect>("effects/Background"));
+            emitterFactory = new ParticleEmitterFactory(assets);
             world = new World(new EntityFactory(assets),
-                              new RoomBackground(assets.BrickTile, assets.TorchLight, new Vector2(4000, 4000), spriteBatch)); // Hack
+                              new RoomBackground(assets.BrickTile, assets.TorchLight, new Vector2(4000, 4000), spriteBatch), // Hack
+                              emitterFactory);
         }
 
         protected override void Update(GameTime gameTime)
@@ -68,11 +71,8 @@ namespace AFewLives
             base.Update(gameTime);
         }
 
-        int ms = 0;
         protected override void Draw(GameTime gameTime)
         {
-            ms += gameTime.ElapsedGameTime.Milliseconds;
-
             world.Draw(spriteBatch, prePostProcess, effects, cam.GetTransform(GraphicsDevice.Viewport));
 
             GraphicsDevice.SetRenderTarget(null);

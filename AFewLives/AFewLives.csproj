@@ -55,6 +55,8 @@
     <Compile Include="src\engine\Camera2D.cs" />
     <Compile Include="src\engine\CameraAim.cs" />
     <Compile Include="src\engine\Controls.cs" />
+    <Compile Include="src\engine\Particle.cs" />
+    <Compile Include="src\engine\ParticleEmitter.cs" />
     <Compile Include="src\engine\Physics.cs" />
     <Compile Include="src\entities\Activatable.cs" />
     <Compile Include="src\entities\Corpse.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="src\EntityFactory.cs" />
     <Compile Include="src\engine\RectangleF.cs" />
     <Compile Include="src\graphics\RoomBackground.cs" />
+    <Compile Include="src\ParticleEmitterFactory.cs" />
     <Compile Include="src\Room.cs" />
     <Compile Include="src\entities\Player.cs" />
     <Compile Include="src\entities\Entity.cs" />
