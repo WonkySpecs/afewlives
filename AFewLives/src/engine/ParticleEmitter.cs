@@ -58,12 +58,9 @@ namespace AFewLives
                 sinceLastSpawn -= 1 / perDelta;
             }
 
-            int c = 0, ca = 0;
             foreach (var p in particles)
             {
-                ca++;
-                if (!p.Active) break;
-                c++;
+                if (!p.Active) continue;
                 p.Update(delta);
             }
         }
@@ -73,7 +70,7 @@ namespace AFewLives
             var rotOrig = new Vector2(tex.Width / 2, tex.Height / 2);
             foreach (var p in particles)
             {
-                if (!p.Active) break;
+                if (!p.Active) continue;
                 spriteBatch.Draw(tex, p.x, null, p.col, p.r, rotOrig, Vector2.One, SpriteEffects.None, 0);
             }
         }
@@ -103,7 +100,7 @@ namespace AFewLives
                 Vector2.Lerp(pAttrs.minVel, pAttrs.maxVel, rand()),
                 Vector2.Lerp(pAttrs.minAccel, pAttrs.maxAccel, rand()),
                 MathHelper.Lerp(pAttrs.minRot, pAttrs.maxRot, rand()),
-                MathHelper.Lerp(pAttrs.maxRot, pAttrs.maxRotDelta, rand()),
+                MathHelper.Lerp(pAttrs.minRotDelta, pAttrs.maxRotDelta, rand()),
                 col);
         }
     }

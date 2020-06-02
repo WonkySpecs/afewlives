@@ -27,7 +27,7 @@ namespace AFewLives
                 minVel = new Vector2(-1, -3),
                 maxVel = new Vector2(1, -1),
                 maxAccel = new Vector2(0, 0.1f),
-                maxRot = -0.05f, minRot = 0.05f,
+                maxRotDelta = -0.05f, minRotDelta = 0.05f,
             };
             return new ParticleEmitter(pa, assets.LeverTexture, 0.1f, new Vector2(300, 300), Color.OrangeRed);
         }

@@ -45,7 +45,6 @@ namespace AFewLives
             LinkDoors(room1.doors[0], room2.doors[0]);
             LinkDoors(room2.doors[1], room3.doors[0]);
             ActiveRoom = rooms[0];
-            ActiveRoom.particleEffects.Add(emitterFactory.GhostShimmer());
             player = entityFactory.Player(new Vector2(200, 800));
         }
 
@@ -59,7 +58,6 @@ namespace AFewLives
         {
             var wasGhost = player.IsGhost;
             player.Update(delta, inputs, ActiveRoom);
-            ActiveRoom.particleEffects[0].pos = player.Pos;
             if (corpse != null)
             {
                 corpse.Update(delta, ActiveRoom.Solids);
@@ -120,19 +118,17 @@ namespace AFewLives
 
             ActiveRoom.DrawBackground(spriteBatch, target, effects.bg, transform);
 
-            // Using immediate to make shaders simpler.
-            // Probably doesn't change performance as everything uses different textures anyway
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, null, null, null, effects.spirit, transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, effects.spirit, transform);
             ActiveRoom.DrawSpiritThings(spriteBatch);
             if (player.IsGhost) player.Draw(spriteBatch);
             spriteBatch.End();
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, effects.solid, transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, effects.solid, transform);
             ActiveRoom.DrawSolidThings(spriteBatch);
             if (!player.IsGhost) player.Draw(spriteBatch);
             if (corpse != null) corpse.Draw(spriteBatch);
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, transform);
             foreach(var emitter in ActiveRoom.particleEffects)
             {
                 emitter.Draw(spriteBatch);
