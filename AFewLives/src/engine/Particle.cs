@@ -5,7 +5,7 @@ namespace AFewLives
 {
     class Particle
     {
-        private float lifetime = 0, elapsed = -1;
+        public float lifetime = -1, elapsed = 0;
         public Vector2 x, dx, dv;
         public float r, dr;
         public Color col;

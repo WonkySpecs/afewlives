@@ -78,7 +78,7 @@ namespace AFewLives
         private void SpawnParticle()
         {
             int freeSlot = -1;
-            for (int i=0; i < allocated; i++)
+            for (int i = 0; i < allocated; i++)
             {
                 if (!particles[i].Active)
                 {
@@ -88,9 +88,16 @@ namespace AFewLives
             }
             if (freeSlot == -1)
             {
-                // TODO: Allocate more
                 freeSlot = allocated;
-                Console.WriteLine("Allocating more particles");
+                var newSize = allocated * 2;
+                var newParticles = new Particle[newSize];
+                particles.CopyTo(newParticles, 0);
+                for (int i = allocated; i < newSize; i++)
+                {
+                    newParticles[i] = new Particle();
+                }
+                particles = newParticles;
+                allocated = newSize;
             }
             var rng = new Random();
             float rand() => (float)rng.NextDouble();

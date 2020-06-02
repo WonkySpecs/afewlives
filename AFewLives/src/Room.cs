@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using AFewLives.Entities;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace AFewLives
 {
@@ -37,7 +38,7 @@ namespace AFewLives
                     RoomBackground bg,
                     Dictionary<RectangleF, CameraAim> cameraZones=null, CameraAim? defaultCameraAim=null)
         {
-            this.defaultCameraAim = defaultCameraAim ?? new CameraAim(1);
+            this.defaultCameraAim = defaultCameraAim ?? new CameraAim(1.5f);
             this.cameraZones = cameraZones ?? new Dictionary<RectangleF, CameraAim>();
             this.fgTint = fgTint;
             this.bg = bg;

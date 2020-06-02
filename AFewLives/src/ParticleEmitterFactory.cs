@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AFewLives
 {
@@ -30,6 +25,21 @@ namespace AFewLives
                 maxRotDelta = -0.05f, minRotDelta = 0.05f,
             };
             return new ParticleEmitter(pa, assets.LeverTexture, 0.1f, new Vector2(300, 300), Color.OrangeRed);
+        }
+
+        public ParticleEmitter Flame(Vector2 pos)
+        {
+            ParticleEmitter.ParticleAttrs pa = new ParticleEmitter.ParticleAttrs
+            {
+                minLifetime = 5,
+                maxLifetime = 60,
+                minVel = new Vector2(-0.3f, 0),
+                maxVel = new Vector2(0.3f, 1),
+                minAccel = new Vector2(0, -0.2f),
+                maxAccel = new Vector2(0, -0.05f),
+                maxRotDelta = -0.3f, minRotDelta = 0.3f,
+            };
+            return new ParticleEmitter(pa, assets.Spark, 5f, pos, Color.White);
         }
     }
 }

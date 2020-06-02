@@ -45,6 +45,7 @@ namespace AFewLives
             LinkDoors(room1.doors[0], room2.doors[0]);
             LinkDoors(room2.doors[1], room3.doors[0]);
             ActiveRoom = rooms[0];
+            ActiveRoom.particleEffects.Add(emitterFactory.Flame(new Vector2(200, 700)));
             player = entityFactory.Player(new Vector2(200, 800));
         }
 
