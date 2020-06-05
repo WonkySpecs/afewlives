@@ -1,21 +1,27 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using FNAExtensions;
 
 namespace AFewLives
 {
     class ParticleEmitter
     {
+        Random rng = new Random();
         /**
          * Ranges of starting attributes for new particles
+
+            Probably going to replace this with custom function
          */
         public class ParticleAttrs
         {
             public float minLifetime, maxLifetime;
-            public Vector2 minOffset = Vector2.Zero, maxOffset = Vector2.Zero;
+            public float minOffsetRadius = 0, maxOffsetRadius = 0;
             public Vector2 minVel = Vector2.Zero, maxVel = Vector2.Zero;
             public Vector2 minAccel = Vector2.Zero, maxAccel = Vector2.Zero;
             public float minRot = 0, maxRot = 0;
+            public float minScale = 1, maxScale = 1;
+            public float minDScale = 1, maxDScale = 1;
             public float minRotDelta = 0, maxRotDelta = 0;
         }
 
@@ -71,7 +77,7 @@ namespace AFewLives
             foreach (var p in particles)
             {
                 if (!p.Active) continue;
-                spriteBatch.Draw(tex, p.x, null, p.col, p.r, rotOrig, Vector2.One, SpriteEffects.None, 0);
+                spriteBatch.Draw(tex, p.x, null, p.col, p.r, rotOrig, p.scale, SpriteEffects.None, 0);
             }
         }
 
@@ -99,15 +105,17 @@ namespace AFewLives
                 particles = newParticles;
                 allocated = newSize;
             }
-            var rng = new Random();
             float rand() => (float)rng.NextDouble();
+            var offsetDir = Vector2.Normalize(new Vector2(rand() * 2 - 1, rand() * 2 - 1));
             particles[freeSlot].Init(
                 MathHelper.Lerp(pAttrs.minLifetime, pAttrs.maxLifetime, rand()),
-                Vector2.Lerp(pAttrs.minOffset, pAttrs.maxOffset, rand()) + pos,
-                Vector2.Lerp(pAttrs.minVel, pAttrs.maxVel, rand()),
-                Vector2.Lerp(pAttrs.minAccel, pAttrs.maxAccel, rand()),
+                offsetDir * MathHelper.Lerp(pAttrs.minOffsetRadius, pAttrs.maxOffsetRadius, rand()) + pos,
+                VectorExtensions.LerpComponents(pAttrs.minVel, pAttrs.maxVel, rand(), rand()),
+                VectorExtensions.LerpComponents(pAttrs.minAccel, pAttrs.maxAccel, rand(), rand()),
                 MathHelper.Lerp(pAttrs.minRot, pAttrs.maxRot, rand()),
                 MathHelper.Lerp(pAttrs.minRotDelta, pAttrs.maxRotDelta, rand()),
+                MathHelper.Lerp(pAttrs.minScale, pAttrs.maxScale, rand()),
+                MathHelper.Lerp(pAttrs.minDScale, pAttrs.maxDScale, rand()),
                 col);
         }
     }

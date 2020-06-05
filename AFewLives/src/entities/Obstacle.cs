@@ -3,7 +3,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using FNAExtensions;
-using System.Runtime.Serialization;
 
 namespace AFewLives.Entities
 {

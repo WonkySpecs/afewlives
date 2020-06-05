@@ -17,8 +17,6 @@ namespace AFewLives
             {
                 minLifetime = 60,
                 maxLifetime = 60,
-                minOffset = Vector2.Zero,
-                maxOffset = Vector2.Zero,
                 minVel = new Vector2(-1, -3),
                 maxVel = new Vector2(1, -1),
                 maxAccel = new Vector2(0, 0.1f),
@@ -31,15 +29,19 @@ namespace AFewLives
         {
             ParticleEmitter.ParticleAttrs pa = new ParticleEmitter.ParticleAttrs
             {
-                minLifetime = 5,
-                maxLifetime = 60,
-                minVel = new Vector2(-0.3f, 0),
-                maxVel = new Vector2(0.3f, 1),
-                minAccel = new Vector2(0, -0.2f),
-                maxAccel = new Vector2(0, -0.05f),
-                maxRotDelta = -0.3f, minRotDelta = 0.3f,
+                minLifetime = 15,
+                maxLifetime = 80,
+                minVel = new Vector2(-0.15f, 0.2f),
+                maxVel = new Vector2(0.15f, 0.8f),
+                minAccel = new Vector2(0, -0.06f),
+                maxAccel = new Vector2(0, -0.03f),
+                minScale = 0.2f,
+                maxScale = 0.35f,
+                minDScale = 0.93f,
+                maxDScale = 0.98f,
+                maxOffsetRadius = 0.3f,
             };
-            return new ParticleEmitter(pa, assets.Spark, 5f, pos, Color.White);
+            return new ParticleEmitter(pa, assets.Spark, 2f, pos, Color.White);
         }
     }
 }

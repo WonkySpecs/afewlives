@@ -52,7 +52,7 @@ namespace AFewLives
             textures.Add("spikes", content.Load<Texture2D>("spikes"));
             textures.Add("brick_tile", content.Load<Texture2D>("brick"));
             textures.Add("torch_light", content.Load<Texture2D>("torchLight"));
-            textures.Add("spark", content.Load<Texture2D>("spark"));
+            textures.Add("spark", content.Load<Texture2D>("better_spark"));
             this.graphicsDevice = graphicsDevice;
             this.animationFactory = animationFactory;
         }
