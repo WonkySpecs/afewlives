@@ -8,49 +8,60 @@ namespace AFewLives.Entities
     {
         private readonly static float speed = 2.5f;
         public bool OnGround { get; set; }
-        public bool IsGhost { get; set; }
+        private readonly float TRANSITION_FRAMES = 35;
+        private float targetSolidity = 1;
+
+        public float Solidity { get; private set; } = 1;
+        public bool IsGhost { get => targetSolidity == 0; }
 
         public Player(Sprite sprite, Vector2 pos) : base(sprite, pos, new Rectangle(0, 0, 16, 16)) 
         {
             OnGround = true;
-            IsGhost = false;
         }
 
         public void Update(float delta, Controls input, Room room)
         {
             base.Update(delta);
-            if (input.WasPressed(Control.ToggleLife)) IsGhost = !IsGhost;
+            if (input.WasPressed(Control.ToggleLife)) targetSolidity = IsGhost ? 1 : 0;
             _vel.X = 0;
             _vel.X += input.IsDown(Control.MoveRight) ? speed : 0;
             _vel.X -= input.IsDown(Control.MoveLeft) ? speed : 0;
 
-            spriteState = _vel.X > 0 ? SpriteState.WalkingRight
-                        : _vel.X < 0 ? SpriteState.WalkingLeft
-                                     : SpriteState.Neutral;
-
-            if (IsGhost)
+            if (Solidity != targetSolidity)
             {
-                if (input.IsDown(Control.MoveUp))
-                {
-                    _vel.Y = -speed;
-                }
-                else if (input.IsDown(Control.MoveDown))
-                {
-                    _vel.Y = speed;
-                }
-                else
-                {
-                    _vel.Y = 0;
-                }
+                var d = Math.Min(delta / TRANSITION_FRAMES, Math.Abs(targetSolidity - Solidity));
+                Solidity += Solidity < targetSolidity ? d : -d;
+                _vel = Vector2.Zero;
             }
             else
             {
-                if (OnGround && input.IsDown(Control.Jump))
+                if (IsGhost)
                 {
-                    _vel.Y = -8f;
+                    if (input.IsDown(Control.MoveUp))
+                    {
+                        _vel.Y = -speed;
+                    }
+                    else if (input.IsDown(Control.MoveDown))
+                    {
+                        _vel.Y = speed;
+                    }
+                    else
+                    {
+                        _vel.Y = 0;
+                    }
                 }
-                _vel.Y += Physics.GRAVITY * delta;
+                else
+                {
+                    if (OnGround && input.IsDown(Control.Jump))
+                    {
+                        _vel.Y = -8f;
+                    }
+                    _vel.Y += Physics.GRAVITY * delta;
+                }
             }
+            spriteState = _vel.X > 0 ? SpriteState.WalkingRight
+                        : _vel.X < 0 ? SpriteState.WalkingLeft
+                                     : SpriteState.Neutral;
             Vector2 newPos = _vel * delta + _pos;
             Vector2 correction = Physics.PositionCorrection(_pos, _vel, delta, staticHitbox, room.Solids);
             OnGround = correction.Y  < 0;
@@ -64,7 +75,8 @@ namespace AFewLives.Entities
                 List<InteractableObstacle> interactables = new List<InteractableObstacle>();
                 foreach(InteractableObstacle o in room.interactables)
                 {
-                    if (IsGhost && o.inSpiritRealm || !IsGhost && ! o.inSpiritRealm)
+                    // Can only interact with objects in same state as player
+                    if ((IsGhost && o.inSpiritRealm) || (!IsGhost && !o.inSpiritRealm))
                     {
                         interactables.Add(o);
                     }
@@ -108,7 +120,7 @@ namespace AFewLives.Entities
         {
             // TODO: sound, animation, and (probably elsewhere) tint change
             Console.WriteLine("rip");
-            IsGhost = true;
+            targetSolidity = 0;
         }
 
         public void MoveWithoutCollision(Vector2 d)

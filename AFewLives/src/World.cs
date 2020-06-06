@@ -27,10 +27,6 @@ namespace AFewLives
             }
         }
 
-        public float ColorDrain { get => colorDrainElapsed / colorDrainLength; }
-        private float colorDrainElapsed = 0;
-        private float colorDrainLength = 20;
-
         public World(EntityFactory entityFactory, RoomBackground rb, ParticleEmitterFactory emitterFactory)
         {
             this.entityFactory = entityFactory;
@@ -69,17 +65,10 @@ namespace AFewLives
             cam.Update(delta);
             if (wasGhost != player.IsGhost)
             {
-                if (player.IsGhost)
-                {
-                    // Spawn corpse
-                    corpse = entityFactory.Corpse(player.Pos, new Vector2(player.Vel.X, -5f));
-                }
-                else
-                {
-                    // Delete corpse
-                    corpse = null;
-                }
+                // Create corpse if player died, delete if they revived
+                corpse = player.IsGhost ? entityFactory.Corpse(player.Pos, new Vector2(player.Vel.X, -5f)) : null;
             }
+
             if (inputs.WasPressed(Control.ToggleZoom)) cam.targetZoom = cam.targetZoom > 1 ? 1 : 5;
 
             if (fadeState != Fade.None)
@@ -101,21 +90,12 @@ namespace AFewLives
                     }
                 }
             }
-
-            if (player.IsGhost && ColorDrain < colorDrainLength)
-            {
-                colorDrainElapsed = Math.Min(colorDrainLength, colorDrainElapsed + delta);
-            }
-            if (!player.IsGhost && ColorDrain > 0)
-            {
-                colorDrainElapsed = Math.Max(0, colorDrainElapsed - delta);
-            }
         }
 
         public void Draw(SpriteBatch spriteBatch, RenderTarget2D target, Effects effects, Matrix transform)
         {
-            effects.spirit.Parameters["visibility"].SetValue(ColorDrain);
-            effects.solid.Parameters["colorDrain"].SetValue(ColorDrain);
+            effects.spirit.Parameters["visibility"].SetValue(1 - player.Solidity);
+            effects.solid.Parameters["colorDrain"].SetValue(1 - player.Solidity);
 
             ActiveRoom.DrawBackground(spriteBatch, target, effects.bg, transform);
 
